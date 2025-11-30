@@ -1,0 +1,184 @@
+.text-with-line {
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    color: #777;
+    /* Light gray text */
+}
+
+.text-with-line::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+    /* Light gray line */
+    margin-left: 10px;
+    /* Space between text and line */
+}
+
+/* For the Progress bar */
+.progress.custom-height {
+    height: 50px;
+    border-radius: 20px;
+    /* For rounded corners */
+    background-color: #f1f1f1;
+    /* Light gray background */
+    overflow: hidden;
+}
+
+.progress-bar.work {
+    background-color: #EAEAEA;
+    /* Gray color for "Work Related" */
+    color: #000;
+    /* Black text for contrast */
+    font-weight: 700;
+    /* Bolder font */
+    font-size: 16px;
+    /* Larger font size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Center text vertically and horizontally */
+}
+
+.progress-bar.personal {
+    background-color: #F5F5F5;
+    /* White color for "Personal Related" */
+    color: #000;
+    /* Blue text for contrast */
+    font-weight: 700;
+    /* Bolder font */
+    font-size: 16px;
+    /* Larger font size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Center text vertically and horizontally */
+}
+
+/* Tab navigation styles (currently commented out in original) */
+/*
+.nav-item .nav-link {
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    color: #000;
+    font-weight: 500;
+    background-color: #F5F9FF;
+    border: 1px solid #F5F9FF;
+}
+
+.nav-item .nav-link:hover {
+    background-color: #e0e0e0;
+}
+
+.active-tab .nav-link {
+    background-color: #688EDC;
+    color: #fff;
+    font-weight: 700;
+    border: none;
+}
+*/
+
+/* Inline styles extracted from HTML for performance and structure */
+
+/* Style for the navbar container to handle horizontal scrolling */
+.tabs-container-wrapper {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.tabs-container {
+    display: flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f9f9f9;
+}
+
+.tabs-container .nav-item {
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+/* Styles for the "On Free Trial" text */
+.trial-info b {
+    color: #000000;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.trial-info span {
+    color: #000000;
+    font-size: 15px;
+}
+
+/* Styles for the main content header */
+.main-content h4 {
+    color: #000000;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+/* Styles for the Licenses card */
+.licenses-card .card-body {
+    padding: 8px 0px 8px 0px !important;
+}
+
+.licenses-card span:first-child {
+    font-weight: 900;
+    color: #818181;
+    margin-right: 15px;
+}
+
+.licenses-card span:last-child {
+    color: #000000;
+    font-weight: 500;
+}
+
+/* Styles for the Overall Adoption Rate card */
+.adoption-rate-card .card-body {
+    padding: 8px 0px 8px 0px !important;
+}
+
+.adoption-rate-card span:first-child {
+    font-weight: 600;
+    color: #818181;
+    margin-right: 15px;
+}
+
+.adoption-rate-card span:last-child {
+    color: #000000;
+    font-weight: 500;
+}
+
+/* Styles for the Growth of Program subtitle */
+.growth-program-header p {
+    display: inline;
+    margin-left: 10px;
+}
+
+/* Styles for the tab links (extracted from inline styles in the loop) */
+.nav-link-base {
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.nav-link-default {
+    color: #000;
+    font-weight: 500;
+    background-color: #F5F9FF;
+    border: 1px solid #F5F9FF;
+}
+
+.nav-link-active {
+    background-color: #688EDC;
+    color: #fff;
+    font-weight: 700;
+    border: none;
+}

@@ -1,0 +1,64 @@
+.availability-indicator {
+    width: 34px;
+    height: 28px;
+    display: inline-block;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: .3s;
+    border-radius: 10px;
+}
+
+.availability-indicator:hover {
+    transform: scale(1.1);
+}
+
+.time-input {
+    width: 120px;
+}
+
+.day-row {
+    padding: 12px 0;
+    transition: background .3s;
+}
+
+.day-label {
+    font-weight: 500;
+}
+
+.unavailable-text {
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Timezone modal */
+.timezone-search {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.timezone-list {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.timezone-item {
+    padding: 10px;
+    cursor: pointer;
+    transition: background .3s;
+}
+
+.timezone-item:hover {
+    background: #f0f8ff;
+}
+
+.timezone-item.selected {
+    background: #007bff;
+    color: #fff;
+}
+
+.btn-close {
+    border: none;
+    background: transparent;
+    font-size: 1.5rem;
+    color: #007bff;
+}

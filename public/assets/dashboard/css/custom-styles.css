@@ -1,0 +1,40 @@
+.sidebar-nav ul .sidebar-item.selected>.sidebar-link {
+    background-color: unset !important;
+    color: #688EDC !important;
+}
+
+.mindway-btn-blue {
+    background: #688EDC !important;
+    color: #ffffff !important;
+    border-radius: 20px !important;
+    border: unset !important;
+    white-space: nowrap !important;
+}
+
+.mindway-btn {
+    border: unset !important;
+    white-space: nowrap !important;
+    background: #F5F9FF !important;
+    color: #688EDC !important;
+    border-radius: 20px !important;
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}
+
+.display-none {
+    display: none;
+}
+
+.contain {
+    object-fit: contain;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.baseline {
+    align-items: baseline;
+}

@@ -1,0 +1,116 @@
+/* Styles extracted from <style> block */
+.search-input {
+    position: relative;
+    width: 18%;
+}
+
+.search-input input {
+    width: 10%;
+    padding-left: 40px;
+    /* Leave space for the icon */
+}
+
+.search-input .ti-search {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #ccc;
+    /* Adjust icon color */
+    pointer-events: none;
+    /* Make the icon non-clickable */
+}
+
+.member-style {
+    color: #72DC68 !important;
+    background-color: #F5FFF6 !important;
+}
+
+.admin-style {
+    color: #DCA268 !important;
+    background-color: #FFFCF5 !important;
+}
+
+/* Styles extracted from inline attributes for better structure */
+
+/* Trial Info */
+.trial-info b {
+    color: #000000;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.trial-info span {
+    color: #000000;
+    font-size: 15px;
+}
+
+/* Search Input Customization */
+.search-input-custom {
+    width: 165px;
+    margin-left: 10px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #F7F7F7;
+}
+
+.search-icon-custom {
+    font-size: 16px;
+    margin-left: 15px;
+}
+
+/* Level Header */
+.level-header {
+    margin-left: 200px !important;
+    font-size: 15px;
+    
+}
+
+/* Remove Button */
+.remove-btn-custom {
+    background-color: #E4E4E4 !important;
+    color: #7C7C7C !important;
+}
+
+/* Admin Level Modal */
+.admin-level-modal .modal-content {
+    width: 80%;
+}
+
+.admin-level-modal-body {
+    gap: 10px;
+}
+
+/* Admin Level Buttons */
+.level-btn-member {
+    color: #72DC68 !important;
+    background-color: #F5FFF6 !important;
+}
+
+.level-btn-admin {
+    color: #DCA268 !important;
+    background-color: #FFFCF5 !important;
+}
+
+/* Confirm Button */
+.confirm-level-btn {
+    place-self: center;
+    display: flex;
+    margin-top: 11px;
+}
+
+.employee-list-header {
+    align-items: baseline !important;
+}
+
+.search-input-field {
+    width: 220px !important;
+    margin-left: 10px;
+    height: 40px;
+    border-radius: 20px;
+    background-color: #F7F7F7;
+}
+ .modal-input-field {
+        border-radius: 20px;
+        background-color: #FAFAFA;
+    }

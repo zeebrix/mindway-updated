@@ -1,0 +1,32 @@
+/* Search Input */
+.search-input {
+    position: relative;
+    width: 100%;
+}
+
+.search-input input {
+    width: 100%;
+    padding-left: 40px;
+    height: 50px;
+    border-radius: 20px;
+    background-color: #F7F7F7;
+}
+
+.search-input .ti-search {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #ccc;
+    font-size: 30px;
+    pointer-events: none;
+}
+
+/* Table Column Widths */
+.col-number { width: 5%; }
+.col-employee { width: 20%; }
+.col-company { width: 15%; }
+.col-remaining { width: 10%; }
+.col-actions { width: 10%; }
+
+.additional-reasons { display: none; }

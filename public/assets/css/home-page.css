@@ -1,0 +1,154 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+.hero {
+    background: linear-gradient(135deg, #002f5f, #005f9e);
+    color: #fff;
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.hero button,
+.cta button {
+    background: #fff;
+    color: #005f9e;
+    border: none;
+    padding: 14px 28px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.service-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.service-card h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #005f9e;
+}
+
+.service-card p {
+    font-size: 16px;
+    color: #555;
+}
+
+.about {
+    background: #f9f9f9;
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 32px;
+    color: #005f9e;
+    margin-bottom: 20px;
+}
+
+.about p {
+    font-size: 18px;
+    color: #555;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.testimonials {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.testimonials h2 {
+    font-size: 32px;
+    color: #005f9e;
+    margin-bottom: 30px;
+}
+
+.testimonial-card {
+    background: #fff;
+    border-left: 4px solid #005f9e;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.testimonial-card p {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.testimonial-card strong {
+    display: block;
+    font-size: 16px;
+    color: #555;
+    margin-top: 5px;
+}
+
+.cta {
+    background: #005f9e;
+    color: #fff;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.cta h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+footer {
+    background: #f3f3f3;
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+footer nav {
+    margin-bottom: 15px;
+}
+
+footer nav a {
+    color: #005f9e;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 14px;
+}
+
+footer nav a:hover {
+    text-decoration: underline;
+}

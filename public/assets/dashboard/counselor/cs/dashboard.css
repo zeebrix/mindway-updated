@@ -1,0 +1,38 @@
+/* Containers */
+.card-session {
+    border-radius: 8px;
+    margin: 15px;
+}
+
+/* Borders */
+.border-right-gray {
+    border-right: 4px solid #D4D4D4;
+}
+
+/* Text Clamping */
+.text-ellipsis {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Buttons */
+.btn-log-session {
+    background-color: #688edc !important;
+    color: white !important;
+    margin-top: 10px;
+}
+
+/* Additional reasons toggle */
+.additional-reasons {
+    display: none;
+}
+
+/* Remove table row spacing */
+.table-no-border tr td {
+    padding: 0;
+    border: none;
+}

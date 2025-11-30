@@ -1,0 +1,156 @@
+/* Main Container & Header */
+.settings-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.settings-header__logo {
+    height: 46px;
+    width: 130px;
+    object-fit: contain;
+}
+
+.settings-header__trial-status {
+    background-color: #fff8e1;
+    color: #f57c00;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Tab Navigation */
+.settings-tabs {
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 2rem;
+}
+
+.settings-tabs .nav-link {
+    border: none;
+    color: #6c757d;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    margin-right: 1rem;
+    transition: color 0.2s ease, border-bottom-color 0.2s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.settings-tabs .nav-link.active {
+    color: #688EDC;
+    border-bottom-color: #688EDC;
+    background-color: transparent;
+}
+
+/* Settings Cards */
+.settings-card {
+    background-color: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.settings-card__content {
+    flex: 1;
+}
+
+.settings-card__label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.settings-card__value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+.settings-card__input {
+    border: none !important;
+    box-shadow: none !important;
+    padding-left: 0 !important;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background-color: transparent;
+}
+
+.settings-card__action {
+    color: #6c757d;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.settings-card__action--editable {
+    cursor: pointer;
+    color: #688EDC;
+    font-size: 1.5rem;
+    transition: color 0.2s ease;
+}
+
+.settings-card__action--editable:hover {
+    color: #506ca9;
+}
+
+/* Specific Card Styles */
+.upload-card {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.upload-card:hover {
+    background-color: #f8f9fa;
+}
+
+.upload-card__icon {
+    height: 30px;
+    width: 40px;
+}
+
+/* 2FA Section */
+.two-factor-section {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.two-factor-section__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+#2fa-setup {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+#qr-code-container {
+    margin: 1rem 0;
+    display: inline-block;
+}
+
+/* Utility Classes */
+.btn-save {
+    white-space: nowrap;
+}

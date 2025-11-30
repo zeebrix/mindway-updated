@@ -1,0 +1,224 @@
+/* Cards */
+.card {
+    border-radius: 20px;
+}
+.card-small {
+    width: auto;
+}
+.card-body {
+    padding: 1rem;
+}
+.card-upload-logo {
+    cursor: pointer;
+    height: 75px;
+}
+.logo-preview {
+    width: 40px;
+    height: 40px;
+}
+
+/* Input fields */
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+}
+
+/* Department List */
+.department-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* Modal */
+.custom-modal-content {
+    border-radius: 20px;
+}
+.custom-input-card-body {
+    height: 55px;
+    padding: 10px 0 5px 20px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+}
+
+.custom-input-label {
+    margin: 0;
+    font-weight: 400;
+    margin-right: 3px !important;
+}
+
+.custom-input-field {
+    margin: 0;
+    border: none !important;
+    box-shadow: none !important;
+    margin-bottom: -20px;
+    padding: 0;
+    font-weight: 500;
+}
+/* Cards */
+.custom-card {
+    border-radius: 20px;
+}
+
+.custom-card-small {
+    border-radius: 20px;
+    width: auto;
+}
+
+.custom-card-body {
+    padding: 10px 0 5px 20px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.custom-card-body-height {
+    height: 55px;
+}
+
+.custom-card-body-logo {
+    height: 75px;
+    cursor: pointer;
+}
+
+/* Labels */
+.custom-label {
+    margin: 0;
+    font-weight: 400;
+}
+
+/* Input Fields */
+.custom-input {
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0;
+    margin-bottom: -20px;
+    padding: 0;
+    font-weight: 500;
+}
+
+/* Button Groups / Radios */
+.plan-type-checkbox {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* Department Items */
+.department-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 5px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
+
+.department-item button {
+    background: transparent;
+    border: none;
+    color: red;
+    cursor: pointer;
+}
+
+/* Upload Logo */
+#previewImage {
+    width: 31px;
+    height: 30px;
+    object-fit: contain;
+}
+/* Card wrapper for file upload */
+.upload-logo-card {
+    border-radius: 20px;
+    height: 55px;
+    padding: 10px 0 5px 20px;
+}
+
+/* Inner container that triggers the upload */
+.upload-logo-trigger {
+    height: 75px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+/* Label inside the upload */
+.upload-logo-label {
+    margin: unset;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+}
+
+/* Label text span */
+.upload-logo-label span {
+    margin-right: 10px;
+    font-weight: normal;
+}
+
+/* Hidden file input */
+.upload-logo-input {
+    margin: unset;
+    border: none !important;
+    box-shadow: none !important;
+    margin-bottom: -20px;
+    padding: unset;
+    font-weight: 500;
+    display: none;
+}
+
+/* Preview image */
+.upload-logo-preview {
+    width: 31px;
+    height: 30px;
+    object-fit: contain;
+}
+/* Departments */
+.department-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.department-item {
+    display: flex;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.department-item button {
+    margin-left: 5px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: blue;
+}
+.department-item button:hover {
+    text-decoration: underline;
+}
+
+/* Buttons */
+.btn-group-toggle .btn {
+    margin-right: 10px;
+}
+
+/* Modals */
+.custom-modal {
+    background: rgba(240, 240, 240, 1);
+    padding: 30px;
+    border-radius: 10px;
+}
+
+/* Upload image */
+.upload-preview {
+    width: 31px;
+    height: 30px;
+    object-fit: contain;
+}
+
+/* Employees table */
+#programEmployeesTable {
+    width: 100%;
+    margin-top: 20px;
+}

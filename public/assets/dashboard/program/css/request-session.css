@@ -1,0 +1,137 @@
+/* General Layout & Typography */
+.card-title {
+    color: #000000;
+}
+
+.page-container {
+    padding: 1.5rem;
+}
+
+/* Tab Navigation */
+.tabs-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-bottom: 0;
+    list-style: none;
+    border-bottom: 1px solid #AEAEAE;
+    padding-bottom: 1px; /* Prevents tab from overlapping the border */
+}
+
+.tabs-container::-webkit-scrollbar {
+    height: 4px;
+}
+
+.tabs-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.tabs-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.tab-item .nav-link {
+    padding: 10px 25px;
+    border-radius: 25px;
+    margin-right: 10px;
+    font-weight: 500;
+    color: #000;
+    background-color: #F5F9FF;
+    border: 1px solid #F5F9FF;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.tab-item .nav-link:hover {
+    background-color: #e9eff7;
+}
+
+/* Active Tab State */
+.tab-item.active .nav-link {
+    color: #fff;
+    font-weight: 700;
+    background-color: #688EDC;
+    border-color: #688EDC;
+}
+
+/* Request Table Styles */
+.request-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px; /* Vertical spacing between rows */
+}
+
+.request-table thead th {
+    color: #000;
+    font-weight: 600;
+    padding: 12px 15px;
+    border: none;
+    background-color: transparent;
+    font-size: 14px;
+    text-align: left;
+}
+
+.request-table tbody tr {
+    background-color: #F8F9FA;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.request-table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.request-table tbody td {
+    padding: 15px;
+    vertical-align: middle;
+    border: none;
+    font-size: 14px;
+}
+
+.request-table tbody td:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.request-table tbody td:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    text-align: center;
+}
+
+.request-id {
+    color: #688EDC;
+    font-weight: 600;
+}
+
+/* Buttons and Pagination */
+.review-btn {
+    background-color: #688EDC;
+    color: #F7F7F7;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.review-btn:hover {
+    background-color: #577ac0;
+    color: #fff;
+}
+
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #688EDC;
+    border-color: #688EDC;
+}
+
+.pagination .page-link {
+    color: #688EDC;
+}

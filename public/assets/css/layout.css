@@ -1,0 +1,30 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background: #f3f8ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.login-container {
+    display: flex;
+    background: #EAF2FF;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 900px;
+    width: 100%;
+}
+
+.login-form {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-spinner {
+    display: none;
+}

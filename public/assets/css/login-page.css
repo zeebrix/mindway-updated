@@ -1,0 +1,97 @@
+.hero-box {
+    width: 348px;
+    background: #E3ECFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 0px 102px 1px 0px;
+    padding: 20px;
+}
+
+.hero-logo {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.hero-logo-small {
+    width: 147px;
+    height: 29px;
+    margin-bottom: 20px;
+}
+
+.hero-title,
+.hero-subtitle,
+.hero-tagline {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.hero-title,
+.hero-subtitle {
+    margin-bottom: 10px;
+}
+
+/* Container Logo */
+.login-form {
+    margin-top: 20px;
+    text-align: left;
+}
+
+/* Logos */
+.login-logo {
+    width: 147px;
+    height: 29px;
+}
+
+/* Headings */
+.login-heading {
+    margin-left: 20px;
+    margin-top: 6px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Error Messages */
+.error-message {
+    color: red;
+    font-size: 14px;
+}
+
+/* Login Button */
+.btn-login {
+    background-color: #688EDC;
+    border-radius: 20px;
+    color: white;
+    width: 100%;
+    font-weight: 500;
+    padding: 10px 0;
+    border: none;
+    cursor: pointer;
+}
+
+/* Helper Links Section */
+.helper-links {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.forgot-password,
+.signup-link,
+.signup-text {
+    color: #8A8A8E;
+    font-size: 14px;
+}
+
+.signup-text {
+    margin-right: 4px;
+}
+
+/* Optional: add hover effect for links */
+.forgot-password:hover,
+.signup-link:hover {
+    text-decoration: underline;
+}

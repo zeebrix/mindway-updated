@@ -1,0 +1,358 @@
+/* ============================================
+   Program Dashboard Styles
+   CSP Compliant - External CSS File
+   ============================================ */
+
+/* ============================================
+   Text with Line Component
+   ============================================ */
+.text-with-line {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    color: #B3B3B3;
+}
+
+.text-with-line::after {
+    content: '';
+    flex: 1;
+    color: #B3B3B3;
+    border: 1px solid #ccc;
+    margin-left: 10px;
+}
+
+/* ============================================
+   Logo Container
+   ============================================ */
+.logo-container {
+    object-fit: contain;
+    height: 46px;
+    width: 130px;
+}
+
+/* ============================================
+   Header Section
+   ============================================ */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+}
+
+.header-trial-info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.trial-badge {
+    color: #000000;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.trial-days {
+    color: #000000;
+    font-size: 15px;
+    margin-left: 0.5rem;
+}
+
+/* ============================================
+   Welcome Section
+   ============================================ */
+.welcome-section {
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.welcome-title {
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.company-title {
+    color: #000000;
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: 0.5rem;
+}
+
+.company-subtitle {
+    font-weight: 500;
+    font-size: 20px;
+}
+
+/* ============================================
+   Utilisation Section
+   ============================================ */
+.utilisation-header {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* ============================================
+   Metrics Cards
+   ============================================ */
+.metrics-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.metric-card {
+    padding: 8px 0px !important;
+}
+
+.metric-card .card-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.metric-label {
+    font-weight: 600;
+    color: #818181;
+    margin-right: 15px;
+}
+
+.metric-value {
+    color: #000000;
+    font-weight: 500;
+}
+
+/* ============================================
+   Adoption Card
+   ============================================ */
+.adoption-card {
+    width: 100%;
+    max-width: 576px;
+    height: 127px;
+}
+
+.adoption-card .card-body {
+    padding: 1rem;
+}
+
+.adoption-title {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.adoption-count {
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.adoption-progress-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.adoption-progress-label {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.adoption-progress-bar {
+    flex: 1;
+    margin: 0 1rem;
+}
+
+.adoption-progress-bar .progress {
+    height: 6px;
+    background-color: #e9ecef;
+    border-radius: 3px;
+}
+
+.adoption-progress-bar .progress-bar {
+    background-color: #007bff;
+    border-radius: 3px;
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 1024px) {
+    .metrics-container {
+        grid-template-columns: 1fr;
+    }
+
+    .adoption-card {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .header-logo {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .header-trial-info {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .welcome-title {
+        font-size: 1.25rem;
+    }
+
+    .company-title {
+        font-size: 18px;
+    }
+
+    .company-subtitle {
+        font-size: 16px;
+    }
+
+    .metrics-container {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .metric-card .card-body {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .metric-label {
+        margin-right: 0;
+    }
+
+    .adoption-card {
+        height: auto;
+    }
+
+    .adoption-progress-container {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+
+    .adoption-progress-bar {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-header {
+        padding: 0 1rem;
+    }
+
+    .welcome-section {
+        padding: 0 1rem;
+    }
+
+    .text-with-line {
+        padding: 0 1rem;
+    }
+
+    .utilisation-header {
+        padding: 0 1rem;
+    }
+
+    .metrics-container {
+        padding: 0 1rem;
+    }
+
+    .adoption-card {
+        margin: 0 1rem;
+    }
+
+    .logo-container {
+        height: 40px;
+        width: 110px;
+    }
+
+    .welcome-title {
+        font-size: 1.1rem;
+    }
+
+    .company-title {
+        font-size: 16px;
+    }
+
+    .company-subtitle {
+        font-size: 14px;
+    }
+
+    .metric-label {
+        font-size: 14px;
+    }
+
+    .metric-value {
+        font-size: 14px;
+    }
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+.container-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.section-spacing {
+    margin-bottom: 2rem;
+}
+
+.card-shadow {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   Animation Classes
+   ============================================ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+@media print {
+    .dashboard-header,
+    .welcome-section,
+    .metrics-container,
+    .adoption-card {
+        page-break-inside: avoid;
+    }
+
+    .metric-card,
+    .adoption-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}
