@@ -19,9 +19,9 @@ function initLocationList() {
     locations.forEach(tz => {
         locationSelect.append(new Option(tz.name, tz.name));
     });
-    const defaultLocation = $('#default-location').text().trim();
+    const defaultLocation = document.getElementById('default-location').value;
     if (defaultLocation) {
-        locationSelect.val(defaultLocation).trigger('change'); // Set default and refresh Select2
+        locationSelect.val(defaultLocation).trigger('change');
     }
 }
 
@@ -43,9 +43,16 @@ function initLanguageList() {
     languages.forEach(tz => {
         languageSelect.append(new Option(tz.name, tz.name));
     });
-    const defaultLanguages = JSON.parse($('#default-languages').text().trim() || "[]");
-    if (defaultLanguages.length > 0) {
-        languageSelect.val(defaultLanguages).trigger('change'); // Set default multiple values
+    let defaultLanguages = document.getElementById('default-languages').value;
+
+    try {
+        defaultLanguages = JSON.parse(defaultLanguages);
+    } catch {
+        defaultLanguages = [];
+    }
+
+    if (defaultLanguages.length) {
+        languageSelect.val(defaultLanguages).trigger('change');
     }
 }
 

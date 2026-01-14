@@ -14,7 +14,7 @@
         <div class="d-flex justify-content-between align-items-center mb-2">
             <div>
                 <img style="object-fit: contain;" height="46px" width="130px" class="popup"
-                    src="{{ asset('storage/logo/' . $user->ProgramDetail->logo) }}" alt="{{ $user->ProgramDetail->company_name }} Logo">
+                    src="{{ asset('storage/' . $user->programDetail->logo) }}" alt="{{ $user->programDetail->company_name }} Logo">
             </div>
             <div class="trial-info">
                 @if ($is_trial)

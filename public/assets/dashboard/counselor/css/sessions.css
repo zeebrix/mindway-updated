@@ -1,0 +1,136 @@
+/* Search Input */
+.search-input {
+    position: relative;
+    width: 100%;
+}
+
+.search-input input {
+    width: 100%;
+    padding-left: 40px;
+    height: 50px;
+    border-radius: 20px;
+    background-color: #F7F7F7;
+}
+
+.search-input .ti-search {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #ccc;
+    font-size: 30px;
+    pointer-events: none;
+}
+
+/* Table Column Widths */
+.col-number {
+    width: 5%;
+}
+
+.col-employee {
+    width: 20%;
+}
+
+.col-company {
+    width: 15%;
+}
+
+.col-remaining {
+    width: 10%;
+}
+
+.col-actions {
+    width: 10%;
+}
+
+.additional-reasons {
+    display: none;
+}
+
+.request-session-loader {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 9999;
+}
+
+.loader-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.spinner-border {
+    width: 4rem;
+    height: 4rem;
+}
+
+.additional-reasons {
+    display: none;
+    margin-left: 10px;
+}
+
+#request_other_reason {
+    display: none;
+}
+
+.session-count {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Max Session Column */
+.max-session-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.max-session-count {
+    margin: 0;
+    font-weight: 600;
+}
+
+.max-session-icon {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+/* Action Buttons Column */
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.action-buttons .btn {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    border-radius: 0.25rem;
+}
+
+.action-buttons .add-session-btn {
+    background-color: #688EDC !important;
+    color: #fff !important;
+}
+
+.action-buttons .add-session-btn:hover {
+    background-color: #5570c7 !important;
+}
+
+.action-buttons .btn-success {
+    color: #fff;
+}
+
+.dataTables_length {
+    display: none !important;
+
+}
+
+.dataTables_filter {
+    display: none !important;
+}

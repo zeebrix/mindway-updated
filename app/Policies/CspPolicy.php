@@ -18,7 +18,9 @@ class CspPolicy extends Basic
                 'https://cdn.jsdelivr.net',
                 'https://cdnjs.cloudflare.com',
                 'https://fonts.googleapis.com',
-                'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js'
+                'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js',
+                'https://cdn.ckeditor.com',
+                'https://www.noupe.com'
             ])
             ->addDirective(Directive::SCRIPT, [
                 'self',
@@ -29,7 +31,9 @@ class CspPolicy extends Basic
                 'https://www.google.com',
                 'https://www.gstatic.com',
                 'unsafe-inline',
-                'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js'
+                'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js',
+                'https://cdn.ckeditor.com',
+                'https://www.noupe.com'
 
             ])
             ->addDirective(Directive::CONNECT, [
@@ -41,7 +45,9 @@ class CspPolicy extends Basic
                 'https://www.google.com',
                 'https://www.gstatic.com',
                 'unsafe-inline',
-                'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js'
+                'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js',
+                'https://cdn.ckeditor.com',
+                'https://www.noupe.com'
 
 
             ])

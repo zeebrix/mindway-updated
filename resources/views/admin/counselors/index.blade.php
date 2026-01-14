@@ -12,14 +12,14 @@
 ['name' => 'All Counsellors', 'url' => null],
 ]
 ])
+
 @section('modal')
-<x-counsellor-modal 
+<x-counsellor-modal
     :id="'addCounsellorModal'"
     :title="'Add New Counsellor'"
     :action="route('admin.counselors.store')"
     :locations="$locations ?? []"
     :languages="$languages ?? []"
     :timezones="$timezones['timezones'] ?? []"
-    :specializations="$specialization ?? []"
-/>
+    :specializations="$specialization ?? []" />
 @endsection

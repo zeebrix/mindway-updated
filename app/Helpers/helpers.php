@@ -1,11 +1,13 @@
 <?php
 
-use App\Models\CustomerDetail;
 use App\Models\Session;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Mail\SendEmail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 if (!function_exists('loginUser')) {
     function loginUser()
@@ -25,7 +27,7 @@ if (!function_exists('getTimezonesList')) {
 if (!function_exists('getProgramTrialInfo')) {
     function getProgramTrialInfo(User $user): array
     {
-        $programDetail = $user->ProgramDetail ?? null;
+        $programDetail = $user->programDetail ?? null;
 
         if (!$programDetail || $programDetail->program_type != 2) {
             return [0, false];
@@ -244,38 +246,6 @@ if (!function_exists('sessionReasons')) {
         return [array_keys($reasonCounts), array_values($reasonCounts)];
     }
 }
-if (!function_exists('adoptionRate')) {
-    function adoptionRate(User $user, $department_id = null): int
-    {
-        $query = User::Customers()
-            ->whereRelation('customerDetail', 'program_id', $user->id);
-
-        if ($department_id) {
-            $query->whereRelation('customerDetail', 'department_id', $department_id);
-        }
-
-        // Count total employees
-        $totalEmployees = $query->count();
-
-        if ($totalEmployees === 0) {
-            return 0;
-        }
-
-        // Count adopted users directly in the query
-        $totalAdopted = User::Customers()
-            ->whereRelation('customerDetail', 'program_id', $user->id)
-            ->when($department_id, function ($q) use ($department_id) {
-                $q->whereRelation('customerDetail', 'department_id', $department_id);
-            })
-            ->where(function ($q) {
-                $q->where('application_user', 1)
-                    ->orWhere('counselling_user', 1);
-            })
-            ->count();
-
-        return (int) round(($totalAdopted / $totalEmployees) * 100);
-    }
-}
 if (!function_exists('getTimezones')) {
     function getTimezones()
     {
@@ -283,5 +253,24 @@ if (!function_exists('getTimezones')) {
         $json = File::get($path);
         $timezones = json_decode($json, true);
         return $timezones;
+    }
+}
+
+
+function sendDynamicEmailFromTemplate($recipient, $subject, $template, $data)
+{
+    $data['subject'] = $subject; // Add subject to data
+    try {
+        Mail::to($recipient)->send(new SendEmail($template, $data));
+        Log::info('Email sent successfully', [
+            'recipient' => $recipient ?? 'N/A',
+            'subject' => $subject ?? 'N/A',
+            'template' => isset($template) ? json_encode($template) : 'N/A',
+            'email_data' => isset($data) ? json_encode($data) : 'N/A',
+        ]);
+        return ['success' => true, 'message' => 'Email sent successfully.'];
+    } catch (\Exception $e) {
+        Log::error('Email sending failed: ' . $e->getMessage());
+        return ['success' => false, 'message' => 'Failed to send email.'];
     }
 }

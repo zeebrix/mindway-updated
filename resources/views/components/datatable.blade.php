@@ -1,4 +1,3 @@
-
 @section('content')
 @if(isset($breadcrumbs) && is_array($breadcrumbs))
 <nav aria-label="breadcrumb" class="mb-4">
@@ -64,13 +63,21 @@
                 @endforeach
                 @endif
                 @if(isset($addNewUrl))
-                <a href="{{ $addNewUrl }}" id="{{ $addNewBtnId }}" data-bs-toggle="modal" data-bs-target="#addCounsellorModal" class="btn mindway-btn-blue">
-                    @if(isset($addNewIcon))
+                <a href="{{ $addNewUrl }}"
+                    id="{{ $addNewBtnId ?? '' }}"
+                    class="btn mindway-btn-blue {{ !empty($openInModal) ? 'open-modal' : '' }}"
+                    @if(!empty($openInModal))
+                    data-bs-toggle="modal"
+                    data-bs-target="#{{$targetModalId}}"
+                    @endif>
+                    @isset($addNewIcon)
                     <i class="{{ $addNewIcon }}"></i>
-                    @endif
+                    @endisset
+
                     {{ $addNewText ?? 'Add New' }}
                 </a>
                 @endif
+
             </div>
         </div>
 
@@ -114,7 +121,16 @@
             </div>
         </div>
         @endif
-
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <h5><strong>There were some errors with your submission:</strong></h5>
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="table-responsive">
             <table class="table text-nowrap mb-0 align-middle"
                 id="{{ $tableId ?? 'data-table' }}"

@@ -62,17 +62,21 @@ class User extends Authenticatable
     {
         return $this->hasOne(CustomerDetail::class);
     }
-    public function ProgramDetail(): HasOne
+    public function programDetail(): HasOne
     {
-        return $this->hasOne(ProgramDetail::class);
+        return $this->hasOne(programDetail::class);
+    }
+    public function counsellorDetail(): HasOne
+    {
+        return $this->hasOne(CounsellorDetail::class);
     }
     public function programPlan(): HasOne
     {
         return $this->hasOne(ProgramPlan::class);
     }
-    public function programDepartment(): HasOne
+    public function programDepartment(): HasMany
     {
-        return $this->hasOne(ProgramDepartment::class);
+        return $this->hasMany(ProgramDepartment::class);
     }
 
     /**
@@ -149,11 +153,17 @@ class User extends Authenticatable
             User::class,
             'program_customers',
             'program_id',
-            'customer_id'
+            'customer_id',
+            'id',
+            'id'
         );
     }
-     public function programDepartments()
+    public function programDepartments()
     {
         return $this->hasMany(ProgramDepartment::class);
+    }
+    public function outlookToken()
+    {
+        return $this->hasOne(OutlookToken::class, 'counseller_id', 'id');
     }
 }

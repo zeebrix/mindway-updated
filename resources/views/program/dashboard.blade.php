@@ -12,8 +12,8 @@
         <div class="dashboard-header mb-2">
             <div class="header-logo">
                 <img class="logo-container popup"
-                    src="{{ asset('storage/logo/' . $program->logo) }}"
-                    alt="{{ $program->company_name }} Logo"
+                    src="{{ asset('storage/' . $program?->programDetail?->logo) }}"
+                    alt="{{ $program->name }} Logo"
                     data-animate="true">
             </div>
             <div class="header-trial-info">
@@ -29,11 +29,11 @@
         <!-- Welcome Section -->
         <div class="welcome-section mb-2">
             <h2 class="welcome-title" data-metric="welcome-name" data-animate="true">
-                Welcome {{ session('loginUserName') }} 👋
+                Welcome {{ $program?->name }} 👋
             </h2>
 
             <h4 class="company-title" data-animate="true">
-                EAP Program for {{ $program->company_name }}
+                EAP Program for {{ $program?->programDetail?->company_name }}
             </h4>
 
             <p class="company-subtitle"></p>
@@ -51,7 +51,7 @@
                 <div class="card card-shadow metric-card" data-animate="true">
                     <div class="card-body">
                         <span class="metric-label">Licenses</span>
-                        <span class="metric-value" data-metric="licenses">{{ $program->max_lic }}</span>
+                        <span class="metric-value" data-metric="licenses">{{ $program?->programDetail?->max_lic }}</span>
                     </div>
                 </div>
             </div>

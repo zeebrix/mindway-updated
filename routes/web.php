@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\CoursesController;
 use App\Http\Controllers\Admin\CoursesAudioController;
 use App\Http\Controllers\Admin\FeelingsController;
 use App\Http\Controllers\Admin\HomeEmojisController;
+use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\LinksController;
 use App\Http\Controllers\Admin\MusicController;
 use App\Http\Controllers\Admin\ProgramsController;
@@ -23,6 +24,8 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\Auth\OutlookController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Counselor\SessionController;
 use App\Http\Controllers\CounselorController;
@@ -56,9 +59,11 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/logout', 'logout')->name('logout')->middleware('auth');
 
     // Google OAuth
-    Route::get('/auth/google/redirect', 'redirectToGoogle')->name('auth.google.redirect');
-    Route::get('/auth/google/callback', 'handleGoogleCallback')->name('auth.google.callback');
+    Route::get('/auth/google/redirect', [GoogleController::class, 'redirectToGoogle'])->name('auth.google.redirect');
+    Route::get('/oauth2/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
+    Route::get('/outlook/connect', [OutlookController::class, 'connect'])->name('auth.outlook.connect');
+    Route::get('/oauth2/outlook/callback', [OutlookController::class, 'callback']);
     // Two-Factor Authentication
     Route::get('/verify-2fa', 'show2fa')->name('2fa.form')->middleware('auth');
     Route::post('/verify-2fa', 'verify2fa')->name('2fa.verify')->middleware(['auth', 'throttle:5,1']);
@@ -75,9 +80,27 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('password/reset', [ResetPasswordController::class, 'reset'])
         ->name('password.update');
 });
+Route::get('/set-password-view', [ResetPasswordController::class, 'showSetPassword']);
+Route::post('/set-password', [ResetPasswordController::class, 'setPassword']);
 
 
+Route::prefix('program')->name('program.')->middleware(['auth'])->group(function () {
 
+    Route::post('/employee/save', [ProgramController::class, 'storeEmployee'])->name('employee.store');
+    Route::get('/employee/add-session', [ProgramController::class, 'addEmployeeSession'])->name('employee.add-session');
+    Route::get('/employee/remove-session', [ProgramController::class, 'removeEmployeeSession'])->name('employee.remove-session');
+    Route::get('/employee/delete', [ProgramController::class, 'removeEmployee'])->name('employee.delete');
+    Route::post('/employee/email-privilege', [ProgramController::class, 'setupEmailPrivilege'])->name('employee.email.privilege');
+});
+Route::prefix('counsellor')->name('counsellor.')->middleware(['auth'])->group(function () {
+    Route::get('/get-vailability', [CounselorController::class, 'fetchCounsellorAvailability'])->name('getAvailability');
+    Route::post('/availability-save', [CounselorController::class, 'setAvailability'])->name('availabilitySave');
+    Route::get('/get-session-data', [CounselorsController::class, 'getSessionData'])->name('counselors.data');
+    Route::get('/session-cancel', [CounselorsController::class, 'cancelSession'])->name('session.cancel');
+    Route::get('/rebook', [CounselorsController::class, 'rebookSession'])->name('session.rebook');
+    Route::post('/save-data', [CounselorsController::class, 'saveProfileField'])->name('save.data');
+    Route::post('/manage-profile', [CounselorsController::class, 'saveProfile'])->name('profile.save');
+});
 
 //==============================================================================
 // ADMIN PORTAL
@@ -99,14 +122,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin-pa
     Route::resource('/programs', ProgramsController::class)->names('programs');
     Route::get('/programs-data', [ProgramsController::class, 'getData'])->name('programs.data');
     Route::post('/programs/{program}/status', [ProgramsController::class, 'updateStatus'])->name('programs.status');
-    Route::post('/programs/{program}/status', [ProgramsController::class, 'updateStatus'])->name('programs.status');
     Route::get('/programs/{program}/reset-sessions', [ProgramsController::class, 'resetMaxSessions'])->name('programs.reset-sessions');
+    Route::get('/programs/{program}/add-bulk', [ProgramsController::class, 'resetMaxSessions'])->name('programs.add-bulk');
+    Route::get('/programs/{program}/get-customer-data', [ProgramsController::class, 'getCustomerData'])->name('programs.get-customer-data');
+    Route::get('/programs/{program}/analytics', [ProgramsController::class, 'getAnalytics'])->name('programs.get-analytics-data');
 
     // counselors
     Route::resource('/counselors', CounselorsController::class)->names('counselors');
     Route::get('/counselors-data', [CounselorsController::class, 'getData'])->name('counselors.data');
 
-    Route::get('/counselors/{counselor}/availability', [CounselorsController::class, 'availability'])->name('counselors.availability');
+    Route::get('/counselors/{user}/availability', [CounselorsController::class, 'availability'])->name('counselors.availability');
     Route::post('/counselors/{counselor}/availability', [CounselorsController::class, 'saveAvailability'])->name('counselors.saveAvailability');
 
     // request-sessions
@@ -119,6 +144,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin-pa
     Route::resource('/courses', CoursesController::class)->names('courses');
     Route::get('/courses-data', [CoursesController::class, 'getData'])->name('courses.data');
 
+
+    Route::prefix('courses/{course}')->group(function () {
+        Route::resource('lessons', LessonController::class)->names('lessons');
+        Route::get('get-lessons/data', [LessonController::class, 'getData'])->name('lessons.data');
+    });
     // Courses Audio
     Route::resource('/courses-audio', CoursesAudioController::class)->names('courses-audio');
     Route::get('/courses-audio-data', [CoursesAudioController::class, 'getData'])->name('courses-audio.data');
@@ -174,14 +204,18 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin-pa
 //==============================================================================
 Route::prefix('counselor')->name('counsellor.')->middleware(['auth', 'can:access-counsellor-panel'])->group(function () {
     Route::get('/dashboard', [CounselorController::class, 'dashboard'])->name('dashboard');
-    Route::resource('/sessions', SessionController::class)->names('sessions');
+    Route::resource('/clients', SessionController::class)->names('clients');
+    Route::get('/get-client-data', [SessionController::class, 'getClientData'])->name('client.data');
+
     Route::get('/session-history', [SessionController::class, 'history'])->name('sessions.history');
     Route::get('/get-availability', [CounselorController::class, 'getAvailability'])->name('availability.index');
-    Route::get('/fetch-counsellor-availability', [CounselorController::class, 'fetchCounsellorAvailability'])->name('availabilitySave');
     Route::get('/profile', [CounselorController::class, 'profile'])->name('profile');
 
     Route::get('/settings', [CounselorController::class, 'getSettings'])->name('settings.index');
     Route::get('/setting-save', [CounselorController::class, 'saveSettings'])->name('setting.save');
+
+
+    Route::get('/book-session/{id}', [CounselorController::class, 'bookSession'])->name('book.session');
 });
 
 
@@ -193,7 +227,6 @@ Route::prefix('program')->name('program.')->middleware(['auth', 'can:access-prog
     Route::get('/analytics', [ProgramController::class, 'getAnalytics'])->name('analytics.index');
     Route::get('/employees', [ProgramController::class, 'getEmployees'])->name('employees.index');
     Route::get('/remove-employee', [ProgramController::class, 'removeEmployees'])->name('employee.remove');
-    Route::post('/employee/save', [ProgramController::class, 'storeEmployee'])->name('employee.store');
     Route::get('/requests', [ProgramController::class, 'getRequests'])->name('requests.index');
     Route::get('/requests-view/{status}', [ProgramController::class, 'getRequests'])->name('requests.view');
     Route::get('/settings', [ProgramController::class, 'getSettings'])->name('settings.index');

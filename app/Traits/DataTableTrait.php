@@ -66,6 +66,8 @@ trait DataTableTrait
             'tableId' => $config['table_id'] ?? 'data-table',
             'title' => $config['title'] ?? 'Data Table',
             'addNewUrl' => $config['add_new_url'] ?? null,
+            'openInModal' => $config['open_in_modal'] ?? false,
+            'targetModalId' => $config['target_modal_id'] ?? false,
             'addNewText' => $config['add_new_text'] ?? 'Add New',
             'addNewBtnId' => $config['add_new_btn_id'] ?? 'add-counselor',
         ], $additionalData);

@@ -1,0 +1,249 @@
+/* -----------------------------
+   Base Form Styles
+------------------------------ */
+
+.form-title {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 1.5em;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 1.5em;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 0.5em;
+    display: block;
+    color: #555;
+}
+
+.form-control,
+select,
+textarea {
+    width: 100%;
+    padding: 0.8em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 3px #007bff;
+}
+
+/* -----------------------------
+   Buttons
+------------------------------ */
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 0.8em 1.5em;
+    font-size: 1em;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* -----------------------------
+   Cards
+------------------------------ */
+
+.upload-card,
+.gender-card,
+.notice-card {
+    border-radius: 20px;
+}
+
+/* -----------------------------
+   Upload Logo
+------------------------------ */
+
+.upload-trigger {
+    height: 75px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.upload-text {
+    margin-right: 20px;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+#uploadLogoInput,
+#uploadIntroInput {
+    display: none;
+}
+
+.upload-icon {
+    width: 40px;
+    height: 30px;
+}
+
+/* -----------------------------
+   Gender Section
+------------------------------ */
+
+.gender-body {
+    height: 75px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.gender-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.gender-btn {
+    border-radius: 20px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+/* -----------------------------
+   Notice Period
+------------------------------ */
+
+.notice-body {
+    padding: 10px 10px 5px 20px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.notice-input-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.notice-input {
+    border: none !important;
+    box-shadow: none !important;
+    margin-right: 10px;
+}
+
+.notice-unit {
+    margin: 0;
+    font-weight: 500;
+}
+
+/* -----------------------------
+   Description
+------------------------------ */
+
+.description-container {
+    margin-top: 20px;
+}
+
+.description-box {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+    resize: none;
+    background-color: #ffffff;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#edit-description {
+    cursor: pointer;
+}
+
+/* -----------------------------
+   Tagify
+------------------------------ */
+
+.tagify.form-control {
+    padding: unset !important;
+    display: flex;
+    width: unset;
+}
+
+/* -----------------------------
+   Timezone Modal
+------------------------------ */
+
+.timezone-search {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.timezone-list {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.timezone-item {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.timezone-item:hover {
+    background-color: #f0f8ff;
+}
+
+.timezone-item.selected {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-close {
+    background-color: transparent;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+/* -----------------------------
+   Communication Buttons
+------------------------------ */
+
+.btn-check+.btn-outline-primary {
+    border-radius: 20px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+/* -----------------------------
+   Video Preview
+------------------------------ */
+
+#videoPreviewContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* -----------------------------
+   Utilities
+------------------------------ */
+
+.alert {
+    margin-bottom: 1em;
+}
+
+.hide-span {
+    display: none !important;
+}

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PragmaRX\Google2FA\Google2FA;
 use App\Http\Requests\StoreCustomerRequest;
+use App\Models\Customer;
 use App\Services\CustomerService;
 use Illuminate\Database\QueryException;
 
@@ -25,23 +26,23 @@ class ProgramController extends Controller
     }
     public function dashboard()
     {
+
+
+
         $program = Auth::user();
         if (!$program->ProgramOwners()) {
             Auth::logout();
             return redirect()->route('login');
         }
         list($leftDays, $is_trial) = getProgramTrialInfo($program);
-        $allUsers = User::with('customerDetail:id,user_id,program_id,application_user,counselling_user')
-            ->whereRelation('customerDetail', 'program_id', $program->id)
-            ->select('users.*')
-            ->addSelect([
-                'is_adopted' => CustomerDetail::selectRaw(
-                    '(application_user = 1 OR counselling_user = 1)'
-                )->whereColumn('customer_details.user_id', 'users.id')
-            ])
-            ->get();
+        $allUsers = $program->allCustomers;
+        $adoptedUsers = 0;
+        foreach ($allUsers as $key => $u) {
+            if ($u?->customerDetail?->application_user == 1 || $u?->customerDetail?->counselling_user == 1) {
+                $adoptedUsers = $adoptedUsers + 1;
+            }
+        }
 
-        $adoptedUsers = $allUsers->where('is_adopted', true)->count();
         $totalUsers = $allUsers->count();
         $adoptionRate = $totalUsers > 0
             ? round(($adoptedUsers / $totalUsers) * 100, 2)
@@ -77,17 +78,14 @@ class ProgramController extends Controller
         }
         $totalSessions = $totalSessions->count();
         list($leftDays, $is_trial) = getProgramTrialInfo($user);
-        $allUsers = User::with('customerDetail:id,user_id,program_id,application_user,counselling_user')
-            ->whereRelation('customerDetail', 'program_id', $user->id)
-            ->select('users.*')
-            ->addSelect([
-                'is_adopted' => CustomerDetail::selectRaw(
-                    '(application_user = 1 OR counselling_user = 1)'
-                )->whereColumn('customer_details.user_id', 'users.id')
-            ])
-            ->get();
+        $allUsers = $user->allCustomers;
 
-        $adoptedUsers = $allUsers->where('is_adopted', true)->count();
+        $adoptedUsers = 0;
+        foreach ($allUsers as $key => $u) {
+            if ($u?->customerDetail?->application_user == 1 || $u?->customerDetail?->counselling_user == 1) {
+                $adoptedUsers = $adoptedUsers + 1;
+            }
+        }
 
         list($growthData, $labels) = calculateGrowth($user, $department_id);
         list($growthDataSession, $labelsSession) =  calculateSessionGrowth($user, $department_id);
@@ -96,7 +94,10 @@ class ProgramController extends Controller
         $percentageData = getSessionsReasonRate($user, $department_id);
         $customerCount = $user->customerDetail ? $user->customerDetail->count() : 0;
         $totalCount = $customerCount + $newUserCount;
-        $adoptionRate = adoptionRate($user, $department_id);
+        $totalUsers = $allUsers->count();
+        $adoptionRate = $totalUsers > 0
+            ? round(($adoptedUsers / $totalUsers) * 100, 2)
+            : 0;
         $departments = ProgramDepartment::where('program_detail_id', $user_id)->get();
         return view('program.analytics.index', get_defined_vars());
     }
@@ -112,7 +113,6 @@ class ProgramController extends Controller
     {
         $status = $request->get('status', 'pending');
         $user = Auth::user();
-
         $requests = SessionRequest::where(['status' => $status, 'program_id' => $user->id])->orderBy('created_at', 'desc')->paginate(10);
         return view('program.session-request.index', get_defined_vars());
     }
@@ -139,14 +139,67 @@ class ProgramController extends Controller
     }
     public function storeEmployee(StoreCustomerRequest $request)
     {
+        $user = auth()->user();
+
+        if (! $user->can('access-admin-panel') && ! $user->can('access-program-panel')) {
+            abort(403, 'Unauthorized');
+        }
         try {
-            $this->customerService->createCustomer($request->validated());
+            $programUser = User::where('id', $request->programUser)->first();
+            $this->customerService->createCustomer($request->validated(), $programUser);
             return back()->with('message', 'Record added successfully.');
         } catch (QueryException $e) {
             if ($e->getCode() == 23000) { // Duplicate entry
                 return back()->with('error', 'User is already registered. Duplicate emails are not allowed.');
             }
             return back()->with('error', 'A database error occurred: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            return back()->with('error', 'An unexpected error occurred: ' . $e->getMessage());
+        }
+    }
+    public function addEmployeeSession(Request $request)
+    {
+        $user = auth()->user();
+
+        if (! $user->can('access-admin-panel') && ! $user->can('access-program-panel')) {
+            abort(403, 'Unauthorized');
+        }
+        try {
+            $customerDetail = CustomerDetail::where('id', $request->customer_detail_id)->first();
+            $customerDetail->max_sessions = $customerDetail->max_sessions + 1;
+            $customerDetail->save();
+            return back()->with('message', 'Session added successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'An unexpected error occurred: ' . $e->getMessage());
+        }
+    }
+    public function removeEmployeeSession(Request $request)
+    {
+        $user = auth()->user();
+
+        if (! $user->can('access-admin-panel') && ! $user->can('access-program-panel')) {
+            abort(403, 'Unauthorized');
+        }
+        try {
+            $customerDetail = CustomerDetail::where('id', $request->customer_detail_id)->first();
+            $customerDetail->max_sessions = $customerDetail->max_sessions - 1;
+            $customerDetail->save();
+            return back()->with('message', 'Session removed successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'An unexpected error occurred: ' . $e->getMessage());
+        }
+    }
+    public function removeEmployee(Request $request)
+    {
+        $user = auth()->user();
+
+        if (! $user->can('access-admin-panel') && ! $user->can('access-program-panel')) {
+            abort(403, 'Unauthorized');
+        }
+        try {
+            User::where('id', $request->customer_id)->delete();
+            CustomerDetail::where('id', $request->customer_detail_id)->delete();
+            return back()->with('message', 'Customer deleted successfully.');
         } catch (\Exception $e) {
             return back()->with('error', 'An unexpected error occurred: ' . $e->getMessage());
         }

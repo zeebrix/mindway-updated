@@ -3,36 +3,30 @@
 
 @section('content')
 <h1 class="fw-bolder">
-    @if ($program?->program_type == 0)
+    @if ($user?->programDetail?->program_type == 0)
     Deactivated :
     @else
     Manage
     @endif
-    {{ $program->company_name }}
-    @if ($program?->program_type == 2)
+    {{ $user?->programDetail?->company_name }}
+    @if ($user?->programDetail?->program_type == 2)
     Trial
     @endif Program
 </h1>
-
-<a href="{{ url('/manage-admin/view-analytics') }}?program_id={{ $program->id }}" class="btn btn-primary mindway-btn-blue mt-2 mb-2">
+<a href="{{ route('admin.programs.get-analytics-data',$user->id) }}" class="btn btn-primary mindway-btn-blue mt-2 mb-2">
     View Analytics <i class="bi bi-bar-chart-fill ms-1"></i>
 </a>
 
 <div class="program-form">
-    @if(session('message'))
-    <div class="alert alert-success">{{ session('message') }}</div>
-    @endif
+    @include('layouts.partials.alerts')
 
-    @if($errors->any())
-    @foreach($errors->all() as $error)
-    <div class="alert alert-danger">{{ $error }}</div>
-    @endforeach
-    @endif
+    <form id="updateProgramForm" action="{{ route('admin.programs.update',$user->id)}}" method="POST" enctype="multipart/form-data">
 
-    <form id="updateProgramForm" action="{{ url('/manage-admin/update-program', ['id' => $program->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        <input type="hidden" name="_method" value="PUT">
+        <input type="hidden" id="user_id" name="user_id" value="{{$user->id}}">
+
         <div class="row">
-            {{-- Company Name --}}
             @include('admin.programs.input-component', [
             'id' => 'company_name',
             'name' => 'company_name',
@@ -40,28 +34,27 @@
             'type' => 'text',
             'placeholder' => 'Enter Company Name',
             'is_required' => true,
-            'value' => $program->company_name,
+            'value' => $user?->programDetail?->company_name,
             ])
 
-            {{-- Access Code --}}
-            @include('admin.programs.input-component', [
-            'id' => 'access_code',
-            'name' => 'code',
-            'label' => 'Access Code',
-            'type' => 'text',
-            'placeholder' => 'ACCESSCODE',
-            'value' => $program->code,
-            ])
+            <div class="d-flex gap-3 flex-wrap">
 
-            {{-- Departments --}}
-            <div class="department-section">
-                <label class="form-label">Departments</label>
-                <div id="departmentList" class="department-list"></div>
-                <button type="button" class="btn btn-link add-department-btn" data-bs-toggle="modal" data-bs-target="#add-department">Add Department</button>
-                <input type="hidden" name="departments" id="departments">
+                <div class="card card-small">
+                    <div class="card-body">
+                        <label for="codeId" class="form-label">Access Code</label>
+                        <input type="text" class="form-control custom-input-field" id="codeId" name="code" placeholder="ACCESSCODE" value="{{ $user?->programDetail?->code }}">
+                    </div>
+                </div>
+
+                <div class="card flex-grow-1">
+                    <div class="card-body">
+                        <label class="form-label">Departments</label>
+                        <div id="departmentList" class="department-list"></div>
+                        <button type="button" class="btn btn-link add-department-btn" data-bs-toggle="modal" data-bs-target="#add-department">Add Department</button>
+                    </div>
+                </div>
             </div>
 
-            {{-- Licenses --}}
             @include('admin.programs.input-component', [
             'id' => 'max_lic',
             'name' => 'max_lic',
@@ -69,29 +62,28 @@
             'type' => 'number',
             'placeholder' => '5',
             'is_required' => true,
-            'value' => $program->max_lic,
+            'value' => $user?->programDetail?->max_lic,
             ])
-
-            {{-- Upload Logo --}}
             @include('admin.programs.upload-component', [
             'id' => 'logo',
             'name' => 'logo',
             'label' => 'Upload Logo',
-            'existing_image' => $program->logo,
+            'existing_image' => $user->programDetail->logo ?? null,
+            'required' => true
             ])
 
-            {{-- Employees Visible --}}
-            <label class="form-label">Employees Visible?</label>
-            <div class="btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-outline-primary">
-                    <input type="radio" name="allow_employees" value="1" @if($program?->allow_employees == '1') checked @endif> Yes
-                </label>
-                <label class="btn btn-outline-primary">
-                    <input type="radio" name="allow_employees" value="0" @if($program?->allow_employees == '0') checked @endif> No
-                </label>
-            </div>
 
-            {{-- Booking Link --}}
+
+            <!-- <div class="col-12">
+                <label class="form-label">Employees Visible?</label>
+                <div class="btn-group-toggle d-flex gap-2 flex-wrap">
+                    <input type="radio" class="btn-check" name="allow_employees" id="yes-employee" value="yes" autocomplete="off" {{ $user?->programDetail?->allow_employees == '1' ? 'checked' : '' }} required>
+                    <label class="btn btn-outline-primary rounded-pill" for="yes-employee">Yes</label>
+
+                    <input type="radio" class="btn-check" name="allow_employees" id="no-employee" value="no" autocomplete="off" {{ $user?->programDetail?->allow_employees == '0' ? 'checked' : '' }} required>
+                    <label class="btn btn-outline-primary rounded-pill" for="no-employee">No</label>
+                </div>
+            </div> -->
             @include('admin.programs.input-component', [
             'id' => 'link',
             'name' => 'link',
@@ -99,10 +91,9 @@
             'type' => 'text',
             'placeholder' => 'Enter Booking Link',
             'is_required' => true,
-            'value' => $program->link,
+            'value' => $user?->programDetail?->link,
             ])
 
-            {{-- Max Session --}}
             @include('admin.programs.input-component', [
             'id' => 'max_session',
             'name' => 'max_session',
@@ -110,29 +101,26 @@
             'type' => 'number',
             'placeholder' => 'Enter Max Session',
             'is_required' => true,
-            'value' => $program->max_session,
+            'value' => $user?->programDetail?->max_lic,
             ])
 
-            {{-- Trial Expire --}}
-            @if($program->program_type == 2)
+            @if($user->program_type == 2)
             @include('admin.programs.input-component', [
             'id' => 'trial_expire',
             'name' => 'trial_expire',
             'label' => 'Trial Expire Date',
             'type' => 'date',
-            'value' => \Carbon\Carbon::parse($program->trial_expire ?? '')->format('Y-m-d'),
+            'value' => \Carbon\Carbon::parse($user?->programDetail?->trial_expire ?? '')->format('Y-m-d'),
             ])
             @endif
 
-            {{-- Active Program Pricing --}}
-            @if($program->program_type == 1)
+            @if($user?->programDetail?->program_type == 1)
             <h4>Payment / Pricing</h4>
-
             <label class="form-label">Plan Type</label>
             <div class="btn-group-toggle" data-toggle="buttons">
                 @foreach(['Pay As You Go', 'Standard', 'Premium'] as $plan)
-                <label class="btn btn-outline-primary">
-                    <input type="radio" name="plan_type" value="{{ $plan }}" @if($ProgramPlan?->plan_type == $plan) checked @endif> {{ $plan }}
+                <label class="btn btn-outline-primary rounded-pill">
+                    <input type="radio" class="btn-check" name="plan_type" value="{{ $plan }}" @if($user?->ProgramPlan?->plan_type == $plan) checked @endif> {{ $plan }}
                 </label>
                 @endforeach
             </div>
@@ -142,43 +130,45 @@
             'name' => 'annual_fee',
             'label' => 'Annual Fee',
             'type' => 'number',
-            'value' => $ProgramPlan?->annual_fee,
+            'placeholder' => 'Annual Fee ',
+            'value' => $user?->ProgramPlan?->annual_fee,
             ])
 
             @include('admin.programs.input-component', [
             'id' => 'cost_per_session',
-
+            'placeholder' => 'Cost Per session ',
             'name' => 'cost_per_session',
             'label' => 'Cost per session',
             'type' => 'number',
-            'value' => $ProgramPlan?->cost_per_session,
+            'value' => $user?->programPlan?->cost_per_session,
             ])
 
             @include('admin.programs.input-component', [
             'id' => 'renewal_date',
             'name' => 'renewal_date',
             'label' => 'Renewal Date',
+            'placeholder' => 'Renewal Date ',
             'type' => 'text',
-            'value' => \Carbon\Carbon::parse($ProgramPlan?->renewal_date)->format('d/m'),
+            'value' => \Carbon\Carbon::parse($user->programPlan?->renewal_date)->format('d/m'),
             ])
 
             <label class="form-label">GST? +10%</label>
             <div class="btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-outline-primary">
-                    <input type="radio" name="gst_registered" value="1" @if($ProgramPlan?->gst_registered) checked @endif> Yes
+                <label class="btn btn-outline-primary rounded-pill">
+                    <input type="radio" class="btn-check" name="gst_registered" value="1" @if($user->programPlan?->gst_registered) checked @endif> Yes
                 </label>
-                <label class="btn btn-outline-primary">
-                    <input type="radio" name="gst_registered" value="0" @if(!$ProgramPlan?->gst_registered) checked @endif> No
+                <label class="btn btn-outline-primary rounded-pill">
+                    <input type="radio" class="btn-check" name="gst_registered" value="0" @if(!$user->programPlan?->gst_registered) checked @endif> No
                 </label>
             </div>
             @endif
         </div>
 
         <div class="form-actions text-center">
-            @if ($program->program_type == 1)
+            @if ($user->program_type == 1)
             <div class="d-flex justify-content-center">
                 <a class="btn btn-primary mb-2 mindway-btn-blue me-2"
-                    href="{{ url('/manage-admin/deactive-program/' . $program->id . '/deactivate') }}">
+                    href="{{ url('/manage-admin/deactive-program/' . $user->id . '/deactivate') }}">
                     Deactivate
                 </a>
                 <button id="submitButton" type="submit" class="btn btn-primary mb-2 mindway-btn-blue">Update
@@ -186,21 +176,27 @@
             </div>
             @endif
 
-            @if ($program->program_type == 0)
+            @if ($user->program_type == 0)
             <div class="d-flex justify-content-center flex-wrap">
-                <a class="btn btn-primary mindway-btn-blue mx-2 mb-2"
-                    href="{{ url('/manage-admin/deactive-program/' . $program->id . '/active') }}">
+                <button type="button"
+                    class="btn btn-primary mindway-btn-blue mx-2 mb-2 js-program-action"
+                    data-action="active"
+                    data-user-id="{{ $user->id }}">
                     Make Active Program
-                </a>
-                <a class="btn btn-primary mindway-btn-blue mx-2 mb-2"
-                    href="{{ url('/manage-admin/deactive-program/' . $program->id . '/extend_trial') }}">
+                </button>
+                <button type="button"
+                    class="btn btn-primary mindway-btn-blue mx-2 mb-2 js-program-action"
+                    data-action="extend_trial"
+                    data-user-id="{{ $user->id }}">
                     Extend Trial By 14 days
-                </a>
+                </button>
                 @if(loginUser() !== 'csm')
-                <a class="btn btn-primary mindway-btn-blue mx-2 mb-2"
-                    href="{{ url('/manage-admin/deactive-program/' . $program->id . '/delete') }}">
+                <button type="button"
+                    class="btn btn-primary mindway-btn-blue mx-2 mb-2 js-program-action"
+                    data-action="deactivate"
+                    data-user-id="{{ $user->id }}">
                     Delete Permanently
-                </a>
+                </button>
                 @endif
                 <button id="submitButton" type="submit" class="btn btn-primary mx-2 mb-2 mindway-btn-blue">
                     Update Program
@@ -210,17 +206,53 @@
             @endif
         </div>
     </form>
+    <form id="programActionForm"
+        action="{{ route('admin.programs.status', $user->id) }}"
+        method="POST"
+        class="d-none">
+        @csrf
+        <input type="hidden" name="action" id="action" value="">
+    </form>
+    <div class="d-flex justify-content-start align-items-center mb-4">
+        <b>
+            <a href="#" class="add-link me-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Add Individual
+            </a>
+        </b>
 
-    {{-- Employees Table --}}
-    <div class="card mt-4">
-        <div class="card-body">
-            <h4>Employees ({{ count($customers) }})</h4>
-            <table class="table table-striped table-bordered" id="programEmployeesTable"></table>
+        <b>
+            <a href="#" class="add-link" data-bs-toggle="modal" data-bs-target="#addSessionModalBulk">
+                Add Bulk
+            </a>
+        </b>
+    </div>
+
+    <div class="card w-100">
+        <div class="card-body p-4">
+
+            <div class="employee-header d-flex justify-content-start align-items-baseline">
+                <h3 class="fw-normal">Employees ({{($totalCustomers) }})</h3>
+
+                <div class="search-input"></div>
+
+                <h2 class="level-title fw-bold">Level</h2>
+                <h2 class="session-left-title fw-bold">Session Left</h2>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table text-nowrap mb-0 align-middle" width="100%" id="Yajra-dataTable"></table>
+            </div>
+
         </div>
     </div>
+
 </div>
+<input type="hidden" id="departmentsData" value='@json($user->programDepartment)'>
 
 
+@include("admin.programs.modal.add-department")
+@include("program.employees.add")
+@include("program.employees.add-bulk")
 
 @endsection
 
@@ -230,4 +262,5 @@
 
 @push('scripts')
 <script src="{{ asset('assets/dashboard/js/program-form.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 @endpush

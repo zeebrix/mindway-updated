@@ -1,0 +1,85 @@
+/* ---------- Session Card ---------- */
+.session-card {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.session-card .card-header {
+    border-bottom: 2px solid #e5e7eb !important;
+    background-color: #f9fafb !important;
+    font-weight: 600 !important;
+    padding: 0.75rem 1.5rem !important;
+}
+
+/* ---------- Session Rows ---------- */
+.session-row {
+    display: grid !important;
+    grid-template-columns: 2fr 1fr 1fr 1fr !important;
+    padding: 1rem 2rem !important;
+    align-items: center !important;
+}
+
+.session-row+.session-row {
+    border-top: 1px solid #e5e7eb !important;
+}
+
+.session-header {
+    font-weight: 600 !important;
+}
+
+/* ---------- Client Info ---------- */
+.session-client-name {
+    font-weight: 600 !important;
+    color: #374151 !important;
+}
+
+.session-client-email {
+    font-size: 0.85rem !important;
+    color: #6b7280 !important;
+}
+
+/* ---------- Status Column ---------- */
+.col-status .badge {
+    font-size: 0.75rem !important;
+    padding: 6px 10px !important;
+}
+
+/* ---------- Action Buttons ---------- */
+.col-action .btn {
+    padding: 0.25rem 0.75rem !important;
+    font-size: 0.875rem !important;
+    border-radius: 0.25rem !important;
+}
+
+.mindway-btn-blue {
+    background-color: #688EDC !important;
+    color: #F7F7F7 !important;
+    border: none !important;
+}
+
+.mindway-btn-blue:hover {
+    background-color: #5570c7 !important;
+    color: #fff !important;
+}
+
+/* ---------- Modal ---------- */
+.modal-warning-box {
+    border-radius: 12px !important;
+}
+
+.modal-warning-box h6 {
+    font-weight: 600 !important;
+}
+
+.modal-warning-box p {
+    margin-bottom: 0 !important;
+}
+
+.modal-warning-box .mt-3 h6 {
+    margin-bottom: 0.5rem !important;
+}
+
+.modal-warning-box .mt-4 {
+    margin-top: 1rem !important;
+}

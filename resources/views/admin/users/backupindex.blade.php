@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 @include('components.datatable', [
     'tableId' => 'users-datatable',
     'title' => 'Users Management',
@@ -75,3 +78,4 @@
         ],
     ],
 ])
+@endsection

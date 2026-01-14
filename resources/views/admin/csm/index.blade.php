@@ -1,3 +1,7 @@
+
+@extends('layouts.app')
+
+@section('content')
 @include('components.datatable', [
     'tableId' => 'csms-datatable',
     'title' => 'Customer Success Manager',
@@ -8,3 +12,4 @@
         ['name' => 'Customer Success manager', 'url' => null],
     ]
 ])
+@endsection

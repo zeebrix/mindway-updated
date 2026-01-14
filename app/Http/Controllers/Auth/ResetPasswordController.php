@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Password; // Import the Password facade
@@ -12,7 +13,22 @@ use Illuminate\Validation\ValidationException;
 class ResetPasswordController extends Controller
 {
     protected $redirectTo = '/login';
-
+    public function showSetPassword(Request $request)
+    {
+        return view('auth.set-password')->with(['data' => $request->all()]);
+    }
+    public function setPassword(Request $request)
+    {
+        $request->validate(['password' => 'required|min:8']);
+        $id = decrypt($request->id);
+        $user = User::where('id', $id)->first();
+        if ($user) {
+            $user->password = bcrypt($request->input('password'));
+            $user->save();
+        }
+        $route = '/login';
+        return redirect($route)->with('status', 'Password successfully reset.');
+    }
     /**
      * Display the password reset view for the given token.
      */

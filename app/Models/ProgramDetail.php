@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProgramDetail extends Model
+class programDetail extends Model
 {
     protected $fillable = [
         'user_id',
@@ -20,5 +20,9 @@ class ProgramDetail extends Model
     public function programDepartments()
     {
         return $this->hasMany(ProgramDepartment::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

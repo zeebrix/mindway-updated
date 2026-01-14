@@ -23,7 +23,7 @@ class Booking extends Model
      */
     public function counsellor(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'counselor_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**

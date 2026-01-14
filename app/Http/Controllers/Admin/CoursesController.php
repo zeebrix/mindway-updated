@@ -64,32 +64,35 @@ class CoursesController extends Controller
                     'searchable' => true,
                     'orderable' => true,
                 ],
-                'course_title' => [
+                'title' => [
                     'title' => 'Course Title',
                     'searchable' => true,
                     'orderable' => true,
                 ],
-                'course_description' => [
+                'description' => [
                     'title' => 'Course Description',
                     'searchable' => true,
                     'orderable' => true,
                     'editColumn' => function ($row) {
-                        return \Illuminate\Support\Str::limit($row->course_description, 50);
+                        return \Illuminate\Support\Str::limit($row->description, 50);
                     },
                 ],
-                'course_thumbnail' => [
+                'thumbnail' => [
                     'title' => 'Thumbnail',
                     'orderable' => false,
                     'searchable' => false,
                     'editColumn' => function ($row) {
-                        if ($row->course_thumbnail) {
-                            return '<img src="' . url($row->course_thumbnail) . '" alt="' . e($row->course_title) . '" class="img-thumbnail" style="width: 100px; height: auto;">';
+                        if ($row->thumbnail) {
+                            return '<img src="' . url($row->thumbnail) . '" alt="' . e($row->thumbnail) . '" class="img-thumbnail" style="width: 100px; height: auto;">';
                         }
                         return '<span class="text-muted">No Image</span>';
                     },
                 ],
-                'course_duration' => [
+                'duration_minutes' => [
                     'title' => 'Course Duration'
+                ],
+                'course_type' => [
+                    'title' => 'Course Type'
                 ],
                 'created_at' => [
                     'title' => 'Created At',
@@ -106,6 +109,13 @@ class CoursesController extends Controller
                     'class' => 'btn btn-sm btn-warning',
                     'text' => 'Edit',
                 ],
+                'manage Lessons' => [
+                    'url' => function ($row) {
+                        return route('admin.lessons.index', $row->id);
+                    },
+                    'class' => 'btn btn-sm btn-warning',
+                    'text' => 'Manage Lessons',
+                ],
                 'delete' => [
                     'url' => function ($row) {
                         return route('admin.courses.destroy', $row->id);
@@ -115,7 +125,7 @@ class CoursesController extends Controller
                 ],
             ],
 
-            'raw_columns' => ['course_thumbnail'],
+            'raw_columns' => ['thumbnail'],
 
             'language' => [
                 'search' => 'Search courses:',
@@ -149,21 +159,23 @@ class CoursesController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'course_title' => 'required|string|max:255',
-            'course_description' => 'nullable|string',
-            'course_duration' => 'required|string|max:100',
-            'course_thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'duration_minutes' => 'required|string|max:100',
+            'course_type' => 'required|string|max:100',
+            'theme_color' => 'required|string|max:100',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $data = $request->except(['_token', 'course_thumbnail']);
+        $data = $request->except(['_token', 'thumbnail']);
 
-        if ($request->hasFile('course_thumbnail')) {
-            $path = $request->file('course_thumbnail')->store('course_thumbnails');
-            $data['course_thumbnail'] = Storage::url($path);
+        if ($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('course_thumbnails');
+            $data['thumbnail'] = Storage::url($path);
         }
 
         Course::create($data);
@@ -204,25 +216,27 @@ class CoursesController extends Controller
     public function update(Request $request, Course $course)
     {
         $validator = Validator::make($request->all(), [
-            'course_title' => 'required|string|max:255',
-            'course_description' => 'nullable|string',
-            'course_duration' => 'required|string|max:100',
-            'course_thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'duration_minutes' => 'required|string|max:100',
+            'course_type' => 'required|string|max:100',
+            'theme_color' => 'required|string|max:100',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $data = $request->except(['_token', '_method', 'course_thumbnail']);
+        $data = $request->except(['_token', '_method', 'thumbnail']);
 
-        if ($request->hasFile('course_thumbnail')) {
+        if ($request->hasFile('thumbnail')) {
             // Delete old thumbnail if it exists
-            if ($course->course_thumbnail) {
-                Storage::delete($course->course_thumbnail);
+            if ($course->thumbnail) {
+                Storage::delete($course->thumbnail);
             }
-            $path = $request->file('course_thumbnail')->store('course_thumbnails');
-            $data['course_thumbnail'] = Storage::url($path);
+            $path = $request->file('thumbnail')->store('course_thumbnails');
+            $data['thumbnail'] = Storage::url($path);
         }
 
         $course->update($data);

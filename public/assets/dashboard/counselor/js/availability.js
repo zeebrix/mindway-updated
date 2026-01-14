@@ -15,7 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ------------------------------------------------------------------ */
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     let timezoneData = [];
-    let counselorId = document.querySelector("meta[name='counselor-id']").content;
+    const counselorIdInput = document.getElementById('counselor_id');
+    const counselorId = counselorIdInput.value;
     let selectedTimezone = selectedTimezoneLabel?.textContent || "Australia/Sydney";
 
     let availability = initializeAvailability();
@@ -84,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /* ------------------------------------------------------------------
        FETCH COUNSELLOR AVAILABILITY
     ------------------------------------------------------------------ */
-    fetch(`/counselor/fetch-counsellor-availability?counselorId=${counselorId}`)
+    fetch(`/counsellor/get-vailability?counselorId=${counselorId}`)
         .then(res => res.json())
         .then(data => {
             if (data.availability) {
@@ -165,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ------------------------------------------------------------------ */
     function createTimeInputs(day) {
         const wrap = document.createElement("div");
-        wrap.className = "time-container";
+        wrap.className = "time-container d-flex";
 
         const start = document.createElement("input");
         start.type = "time";
@@ -182,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         const dash = document.createElement("span");
-        dash.className = "mx-2";
+        dash.className = "mx-3 mt-2";
         dash.textContent = "–";
 
         const end = document.createElement("input");
@@ -213,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const payload = formatPayload();
 
-        fetch("/availability-save", {
+        fetch("/counsellor/availability-save", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -38,3 +38,50 @@
 .baseline {
     align-items: baseline;
 }
+
+/* Remove borders from all DataTable headers and cells */
+#Yajra-dataTable th,
+#Yajra-dataTable td {
+    border: none !important;
+}
+
+/* Optional: remove bottom border if DataTables adds it via classes */
+#Yajra-dataTable thead th {
+    border-bottom: none !important;
+}
+
+/* Optional: remove stripe borders */
+#Yajra-dataTable.table-striped tbody tr:nth-of-type(odd),
+#Yajra-dataTable.table-striped tbody tr:nth-of-type(even) {
+    background-color: transparent !important;
+}
+
+.theme-btn {
+    border: unset !important;
+    white-space: nowrap !important;
+    background: #F5F9FF;
+    color: #688EDC;
+    border-radius: 20px !important;
+}
+
+.member-style {
+    color: #72DC68 !important;
+    background-color: #F5FFF6 !important;
+}
+
+.admin-style {
+    color: #DCA268 !important;
+    background-color: #FFFCF5 !important;
+}
+
+.body-wrapper>.container-fluid,
+.body-wrapper>.container-lg,
+.body-wrapper>.container-md,
+.body-wrapper>.container-sm,
+.body-wrapper>.container-xl,
+.body-wrapper>.container-xxl {
+    max-width: 1200px;
+    padding: 24px;
+    -webkit-transition: 0.2s ease-in;
+    transition: 0.2s ease-in
+}

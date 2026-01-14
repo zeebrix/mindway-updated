@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Availability;
 use App\Models\Booking;
 use App\Models\User;
+use App\Services\SlotGenerationService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use Yajra\DataTables\DataTables;
 
 class CounselorController extends Controller
 {
@@ -16,7 +20,7 @@ class CounselorController extends Controller
     {
         $counselor = loginUser();
         $customers = User::whereHas('customerDetail')->get();
-        $upcomingBookings = Booking::where('counselor_id', $counselor->id)
+        $upcomingBookings = Booking::where('user_id', $counselor->id)
             ->where('status', Booking::Confirmed)
             ->whereHas('slot', function ($query) {
                 $query->where('start_time', '>', now()->subHours(24));
@@ -33,12 +37,13 @@ class CounselorController extends Controller
     }
     public function getAvailability()
     {
-        $counselor = loginUser();
+        $user = loginUser();
+        $counselor = $user->counsellorDetail;
         $currentTimezone = $counselor?->timezone ?? 'UTC';
         $timezones = getTimezonesList();
         $availabilityData = [];
 
-        foreach ($counselor->availabilities as $slot) {
+        foreach ($user->availabilities as $slot) {
             $start = Carbon::parse($slot->start_time)->setTimezone($currentTimezone)->format('H:i');
             $end   = Carbon::parse($slot->end_time)->setTimezone($currentTimezone)->format('H:i');
 
@@ -53,15 +58,16 @@ class CounselorController extends Controller
             'availabilityData',
             'currentTimezone',
             'timezones',
-            'counselor'
+            'counselor',
+            'user'
         ));
     }
     public function fetchCounsellorAvailability(Request $request)
     {
-        $availabilities = Availability::where('counselor_id', $request->counselorId)->get();
-
+        $availabilities = Availability::where('user_id', $request->counselorId)->get();
         $availability = [];
-        $currentTimezone = (count($availabilities) > 0) ? $availabilities[0]?->counselor?->timezone : 'UTC';
+        $currentTimezone = $availabilities[0]?->user?->timezone ?? 'UTC';
+        $currentTimezone = $currentTimezone ? $currentTimezone : 'UTC';
         if (!empty($availabilities)) {
             foreach ($availabilities as $data) {
                 $startTimeInCounselorTimezone = Carbon::parse($data->start_time)->setTimezone($currentTimezone);
@@ -81,68 +87,9 @@ class CounselorController extends Controller
     public function profile()
     {
         $user = loginUser();
+        $counselor = $user->counsellorDetail;
         $timezones = getTimezones();
-        $fields = [
 
-            [
-                'type' => 'radio',
-                'label' => 'Gender',
-                'name'  => 'gender',
-                'options' => ['Male', 'Female', 'Other'],
-                'col' => 6
-            ],
-
-            [
-                'type' => 'number',
-                'label' => 'Notice Period (hours)',
-                'name'  => 'notice_period',
-                'col' => 4
-            ],
-
-            [
-                'type' => 'textarea',
-                'label' => 'Description',
-                'name'  => 'description',
-                'col' => 12
-            ],
-
-            [
-                'type' => 'select',
-                'label' => 'Location',
-                'name'  => 'location',
-                'col'   => 12
-            ],
-
-            [
-                'type' => 'select',
-                'label' => 'Language',
-                'name'  => 'language',
-                'multiple' => true,
-                'col' => 12
-            ],
-
-            [
-                'type' => 'checkbox',
-                'label' => 'Communication Methods',
-                'name'  => 'communication_method',
-                'options' => ['Phone Call', 'Video Call'],
-                'col' => 8
-            ],
-
-            [
-                'type' => 'file',
-                'label' => 'Logo Upload',
-                'name'  => 'logo',
-                'col' => 4
-            ],
-
-            [
-                'type' => 'file',
-                'label' => 'Intro Video',
-                'name'  => 'intro_video',
-                'col' => 6
-            ],
-        ];
 
         return view('counselor.profile', get_defined_vars());
     }
@@ -166,5 +113,66 @@ class CounselorController extends Controller
             );
         }
         return view('program.settings.index', get_defined_vars());
+    }
+    public function setAvailability(Request $request)
+    {
+        $validated = $request->validate([
+            'availability' => 'present|array',
+        ]);
+
+        $availabilityData = $validated['availability'];
+        $user_id = $request->counselorId;
+        $counselor = User::findOrFail($user_id);
+
+        DB::beginTransaction();
+        try {
+            // Delete existing availabilities
+            $counselor->availabilities()->delete();
+
+            foreach ($availabilityData as $dayAvailability) {
+                if (!empty($dayAvailability['start_time']) && !empty($dayAvailability['end_time'])) {
+                    $startTime = Carbon::parse($dayAvailability['start_time'], $counselor->timezone);
+                    $endTime = Carbon::parse($dayAvailability['end_time'], $counselor->timezone);
+
+                    $startTimeUtc = $startTime->setTimezone('UTC')->format('H:i:s');
+                    $endTimeUtc = $endTime->setTimezone('UTC')->format('H:i:s');
+
+                    $counselor->availabilities()->create([
+                        'day' => $dayAvailability['day_of_week'],
+                        'start_time' => $startTimeUtc,
+                        'end_time' => $endTimeUtc,
+                        'available' => true,
+                    ]);
+                }
+            }
+
+            // Delete unbooked slots and regenerate
+            $counselor->slots()->where('is_booked', false)->delete();
+            app(SlotGenerationService::class)->generateSlotsForCounselor($counselor);
+
+            DB::commit();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Availability updated successfully.'
+                ]);
+            }
+
+            return redirect()->route('counsellor.index')->with('success', 'Availability updated successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e->getMessage());
+            Log::error('Error updating availability', ['error' => $e->getMessage()]);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'An error occurred while updating availability. Please try again later.'
+                ], 500);
+            }
+
+            return redirect()->route('counsellor.index')->with('error', 'An error occurred while updating availability. Please try again later.');
+        }
     }
 }

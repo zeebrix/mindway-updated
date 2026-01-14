@@ -1,10 +1,19 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // --- Tab Switching Logic ---
     const tabs = document.querySelectorAll('.settings-tabs .nav-link');
     const tabContents = document.querySelectorAll('.tab-pane');
+    tabContents.forEach(content => content.style.display = 'none');
+    const activeTab = document.querySelector('.settings-tabs .nav-link.active') || tabs[0];
+    if (activeTab) {
+        activeTab.classList.add('active');
+        const activeContent = document.querySelector(activeTab.getAttribute('href'));
+        if (activeContent) {
+            activeContent.style.display = 'block';
+        }
+    }
 
     tabs.forEach(clickedTab => {
-        clickedTab.addEventListener('click', function(e) {
+        clickedTab.addEventListener('click', function (e) {
             e.preventDefault();
 
             // Deactivate all tabs and content
@@ -26,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const editNameContainer = document.getElementById('edit-name-container');
 
     if (editNameBtn) {
-        editNameBtn.addEventListener('click', function() {
+        editNameBtn.addEventListener('click', function () {
             companyNameInput.readOnly = false;
             companyNameInput.focus();
 
@@ -45,14 +54,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         fetch('/manage-program/save-name', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({ company_name: companyName })
-            })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ company_name: companyName })
+        })
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
@@ -82,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (logoInput) {
-        logoInput.addEventListener('change', function() {
+        logoInput.addEventListener('change', function () {
             const file = this.files[0];
             if (!file) return;
 
@@ -94,13 +103,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
             fetch(uploadUrl, {
-                    method: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'Accept': 'application/json',
-                    },
-                    body: formData,
-                })
+                method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                },
+                body: formData,
+            })
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
@@ -122,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const setup2faDiv = document.getElementById('2fa-setup');
 
     if (enable2faCheckbox) {
-        enable2faCheckbox.addEventListener('change', function() {
+        enable2faCheckbox.addEventListener('change', function () {
             setup2faDiv.style.display = this.checked ? 'block' : 'none';
         });
     }

@@ -25,6 +25,7 @@ class StoreCustomerRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email',
             'level' => 'required|string|in:admin,member',
+            'programUser' => 'sometimes|string',
         ];
     }
 }

@@ -1,0 +1,29 @@
+/* Header container for title and optional sort select */
+.sessions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem; /* Adds space below header */
+}
+
+/* Table header text */
+.table thead h6 {
+    margin: 0;
+    font-weight: 600; /* fw-semibold equivalent */
+    font-size: 1rem;  /* adjust size if needed */
+}
+
+/* Optional: style for select dropdown if you uncomment it */
+.sort-select {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+/* Table responsiveness (already using bootstrap) */
+.table-responsive {
+    margin-top: 1rem;
+}

@@ -1,79 +1,139 @@
-// Modal handler for dynamic Add Session buttons
-function handleAddSessionButtons(buttons) {
-    const modal = document.getElementById('addSessionModal');
-    const customerIdInput = modal.querySelector('input[name="customerId"]');
-    const programIdInput = modal.querySelector('input[name="programId"]');
-    const modalTitle = modal.querySelector('.modal-title');
-    const submitButton = modal.querySelector('button[type="submit"]');
+(function ($) {
 
-    buttons.forEach(button => {
-        button.addEventListener("click", () => {
-            const customerId = button.dataset.id;
-            const programId = button.dataset.program_id;
-            const customerName = button.dataset.customer_name;
+    /* -----------------------------
+     |  DataTable Initialization
+     |----------------------------- */
+    document.addEventListener('DOMContentLoaded', function () {
+        const userInput = document.getElementById('user_id');
+        if (!userInput) return;
 
-            customerIdInput.value = customerId;
-            programIdInput.value = programId;
-
-            modalTitle.textContent = `Add Counselling Session for ${customerName}`;
-            submitButton.textContent = `ADD SESSION FOR ${customerName}`;
+        $('#Yajra-dataTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: `/counselor/get-client-data?counsellor_id=${userInput.value}`,
+                type: "GET"
+            },
+            columns: [
+                { data: 'id', name: 'id' },
+                { data: 'name_email', name: 'name_email' },
+                { data: 'company_name', name: 'company_name' },
+                { data: 'max_session', name: 'max_session' },
+                { data: 'action', name: 'action' },
+            ],
         });
     });
-}
 
-// MutationObserver to detect dynamically added elements
-const observer = new MutationObserver(mutations => {
-    mutations.forEach(mutation => {
-        if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
-            mutation.addedNodes.forEach(node => {
-                if (node.nodeType === 1 && node.classList.contains("add-session-btn")) {
-                    handleAddSessionButtons([node]);
-                }
+    /* -----------------------------
+     |  Add Session Modal Handler
+     |----------------------------- */
+    function bindAddSessionButtons(buttons) {
+        const modal = document.getElementById('addSessionModal');
+        if (!modal) return;
 
-                const buttons = node.querySelectorAll?.(".add-session-btn");
-                if (buttons?.length) handleAddSessionButtons(buttons);
+        const customerIdInput = modal.querySelector('[name="customerId"]');
+        const programIdInput = modal.querySelector('[name="programId"]');
+        const modalTitle = modal.querySelector('.modal-title');
+        const submitButton = modal.querySelector('button[type="submit"]');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                customerIdInput.value = button.dataset.id || '';
+                programIdInput.value = button.dataset.program_id || '';
+
+                const name = button.dataset.customer_name || '';
+                modalTitle.textContent = `Add Counselling Session for ${name}`;
+                submitButton.textContent = `ADD SESSION FOR ${name}`;
             });
-        }
-    });
-});
+        });
+    }
 
-observer.observe(document.body, { childList: true, subtree: true });
+    /* -----------------------------
+     |  Request Session Modal
+     |----------------------------- */
+    function bindRequestSessionButtons($buttons) {
+        $buttons.each(function () {
+            const $btn = $(this);
 
-// Search Filter
-$(document).ready(function () {
-    $('#requestSessionModal form').on('submit', function () {
-        $('#requestSessionLoader').fadeIn();
-    });
+            $btn.tooltip({ trigger: 'hover', placement: 'top' });
 
-    $('#searchInput').on('input', function () {
-        const searchText = $(this).val().toLowerCase();
-        $('#customersTable .customer-row').each(function () {
-            $(this).toggle($(this).text().toLowerCase().includes(searchText));
+            $btn.off('click').on('click', function () {
+                $('#requestCustomerId').val($btn.data('id') || '');
+                $('#programIdv').val($btn.data('program_id') || '');
+                $('#appCustomerId').val($btn.data('app_customer_id') || '');
+                $('#clientNameValue').text($btn.data('customer_name') || '');
+            });
+        });
+    }
+
+    /* -----------------------------
+     |  Global Mutation Observer
+     |----------------------------- */
+    const observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+            mutation.addedNodes.forEach(node => {
+                if (node.nodeType !== 1) return;
+
+                // Add Session Buttons
+                if (node.classList.contains('add-session-btn')) {
+                    bindAddSessionButtons([node]);
+                }
+                bindAddSessionButtons(node.querySelectorAll?.('.add-session-btn') || []);
+
+                // Request Session Buttons
+                const $requestBtns = $(node).hasClass('request-session-btn')
+                    ? $(node)
+                    : $(node).find('.request-session-btn');
+
+                if ($requestBtns.length) {
+                    bindRequestSessionButtons($requestBtns);
+                }
+            });
         });
     });
-});
 
-// Toggle Additional Reasons
-function toggleAdditionalReasons() {
-    const wrapper = document.getElementById('additionalReasons');
-    const workRelated = document.getElementById('work_related');
-    const otherInput = document.getElementById('other_reason');
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
 
-    if (workRelated.checked) {
-        wrapper.style.display = "block";
-    } else {
-        wrapper.style.display = "none";
-        wrapper.querySelectorAll("input[type=checkbox]").forEach(chk => chk.checked = false);
-        otherInput.style.display = "none";
-        otherInput.value = "";
-    }
-}
+    /* -----------------------------
+     |  DOM Ready Handlers
+     |----------------------------- */
+    $(document).ready(function () {
 
-// Toggle Other Text Input
-function toggleOtherInput() {
-    const checkbox = document.getElementById('other');
-    const input = document.getElementById('other_reason');
+        // Initial bindings
+        bindAddSessionButtons(document.querySelectorAll('.add-session-btn'));
+        bindRequestSessionButtons($('.request-session-btn'));
 
-    input.style.display = checkbox.checked ? "block" : "none";
-    if (!checkbox.checked) input.value = "";
-}
+        // Loader on submit
+        $('#requestSessionModal form').on('submit', function () {
+            $('#requestSessionLoader').fadeIn();
+        });
+
+        // Search filter
+        $('#searchInput').on('input', function () {
+            const text = $(this).val().toLowerCase();
+            $('#customersTable .customer-row').each(function () {
+                $(this).toggle($(this).text().toLowerCase().includes(text));
+            });
+        });
+
+        // Toggle work-related reasons
+        $('#request_work_related').on('change', function () {
+            const isChecked = this.checked;
+            $('#requestAdditionalReasons').toggle(isChecked);
+
+            if (!isChecked) {
+                $('#requestAdditionalReasons input[type="checkbox"]').prop('checked', false);
+                $('#request_other_reason').hide().val('');
+            }
+        });
+
+        // Toggle other input
+        $('#request_other').on('change', function () {
+            $('#request_other_reason').toggle(this.checked).val(this.checked ? '' : '');
+        });
+    });
+
+})(jQuery);

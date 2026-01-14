@@ -47,6 +47,9 @@
     <script src="{{ asset('assets/dashboard/js/custom.js') }}"></script>
 
     @stack('scripts')
+    <!-- @if(Auth::check() && Auth::user()->user_type=='counsellor')
+  <script src='https://www.noupe.com/embed/019b7813b0fc7b43aed0751b2b39324692e3.js'></script>
+  @endif -->
 </body>
 
 </html>

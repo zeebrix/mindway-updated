@@ -1,8 +1,21 @@
 $('#addCounsellorModal').on('shown.bs.modal', function () {
-    $('#location, #language','#communication_method').select2({
+    const selects = $('#location, #language, #communication_method');
+
+    // Destroy previous Select2 instance if exists
+    selects.each(function () {
+        if ($(this).hasClass("select2-hidden-accessible")) {
+            $(this).select2('destroy');
+        }
+    });
+
+    // Initialize Select2
+    selects.select2({
         allowClear: true,
         dropdownParent: $('#addCounsellorModal'),
         width: '100%',
+        placeholder: function () {
+            return $(this).data('placeholder') || 'Select an option';
+        }
     });
 });
 document.addEventListener("DOMContentLoaded", function () {

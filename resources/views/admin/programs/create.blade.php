@@ -9,11 +9,12 @@
 
 @include('layouts.partials.alerts')
 
-<form action="{{ route('admin.programs.store') }}" method="POST" enctype="multipart/form-data" class="program-form">
+<form action="{{ route('admin.programs.store') }}" method="POST" enctype="multipart/form-data" class="program-form needs-validation" novalidate>
     @csrf
     <input type="hidden" name="program_type" value="{{ $type }}">
 
     <div class="row g-3">
+
 
         @include('admin.programs.input-component', [
         'name' => 'company_name',
@@ -21,7 +22,7 @@
         'type' => 'text',
         'placeholder' => 'Enter Company Name',
         'is_required' => true,
-        'id' => 'company_nameId',
+        'id' => 'company_name',
         'value' => old('company_name')
         ])
 
@@ -75,35 +76,31 @@
         'value' => old('link')
         ])
 
-        <div class="col-12 me-3">
-    <div class="card upload-logo-card">
-        <div id="uploadLogoTrigger" class="upload-logo-trigger">
-            <div class="d-flex">
-                <label for="logoId" class="form-label mb-1 upload-logo-label">
-                    <span>Upload Logo</span>
-                </label>
-                <input type="file" class="form-control upload-logo-input" id="logoId" name="logo" required>
-                <div>
-                    <img id="previewImage" class="upload-logo-preview" src="{{ asset('/images/upload.png') }}" alt="logo image">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+        @include('admin.programs.upload-component', [
+        'id' => 'logo',
+        'name' => 'logo',
+        'label' => 'Upload Logo',
+        'existing_image' => null,
+        'required' => true
+        ])
 
 
 
-        {{-- Employees Visible --}}
         <div class="col-12">
             <label class="form-label">Employees Visible?</label>
-            <div class="btn-group-toggle d-flex gap-2 flex-wrap">
-                <input type="radio" class="btn-check" name="allow_employees" id="yes-employee" value="yes" autocomplete="off" {{ old('allow_employees') == 'yes' ? 'checked' : '' }} required>
+            <div class="btn-group-toggle d-flex gap-2 flex-wrap" id="allow-employees-group">
+                <input type="radio" class="btn-check" name="allow_employees" id="yes-employee" value="yes" autocomplete="off">
                 <label class="btn btn-outline-primary rounded-pill" for="yes-employee">Yes</label>
 
-                <input type="radio" class="btn-check" name="allow_employees" id="no-employee" value="no" autocomplete="off" {{ old('allow_employees') == 'no' ? 'checked' : '' }} required>
+                <input type="radio" class="btn-check" name="allow_employees" id="no-employee" value="no" autocomplete="off">
                 <label class="btn btn-outline-primary rounded-pill" for="no-employee">No</label>
             </div>
+            <div class="invalid-feedback">
+                Please select if employees are visible.
+            </div>
         </div>
+
+
 
         <span class="fw-bolder mb-3 d-block">Assign Admin User</span>
 
@@ -113,7 +110,7 @@
         'type' => 'text',
         'placeholder' => 'Ryder Mckenzie',
         'is_required' => true,
-        'id' => 'full_nameId',
+        'id' => 'full_name',
         'value' => old('full_name')
         ])
 
@@ -139,7 +136,6 @@
         ])
         @endif
 
-        {{-- Payment/Pricing for Active Programs --}}
         <div id="active-program" class="{{ $type == 1 ? 'd-block' : 'd-none' }}">
             <span class="fw-bolder my-3 d-block">Payment/Pricing</span>
             <label class="form-label">Plan Type</label>
@@ -199,22 +195,7 @@
     </div>
 </form>
 
-<div class="modal fade" id="add-department" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content custom-modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Department Name</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <input type="text" id="departmentNameInput" class="form-control" placeholder="Enter Department Name">
-            </div>
-            <div class="modal-footer">
-                <button id="addDepartmentButton" type="button" class="btn btn-primary">Add</button>
-            </div>
-        </div>
-    </div>
-</div>
+@include("admin.programs.modal.add-department");
 @endsection
 
 @push('styles')

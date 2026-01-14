@@ -141,9 +141,9 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ request()->routeIs('counsellor.sessions.*') ? 'active' : '' }}" href="{{ route('counsellor.sessions.index') }}">
+                    <a class="sidebar-link {{ request()->routeIs('counsellor.clients.*') ? 'active' : '' }}" href="{{ route('counsellor.clients.index') }}">
                         <span><i class="ti ti-calendar-event"></i></span>
-                        <span class="hide-menu">My Sessions</span>
+                        <span class="hide-menu">Clients</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -152,19 +152,34 @@
                         <span class="hide-menu">History</span>
                     </a>
                 </li>
-                 <li class="sidebar-item">
-                    <a class="sidebar-link {{ request()->routeIs('counsellor.sessions.*') ? 'active' : '' }}" href="{{ route('counsellor.availability.index') }}">
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ request()->routeIs('counsellor.availability.*') ? 'active' : '' }}" href="{{ route('counsellor.availability.index') }}">
                         <span><i class="ti ti-calendar-event"></i></span>
                         <span class="hide-menu">Availability</span>
                     </a>
                 </li>
-                  <li class="sidebar-item">
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Other<svg width="112" height="2" viewBox="0 0 112 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0.5 1.5L111.5 0.5" stroke="#D7D7D7" stroke-linecap="round" />
+                        </svg>
+                    </span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link" target="_blank" href="https://mindwayeap.notion.site" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-settings"></i>
+                        </span>
+                        <span class="hide-menu">Policies & Procedures </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a class="sidebar-link {{ request()->routeIs('counsellor.profile.*') ? 'active' : '' }}" href="{{ route('counsellor.profile') }}">
                         <span><i class="ti ti-calendar-event"></i></span>
                         <span class="hide-menu">Profile</span>
                     </a>
                 </li>
-                 <li class="sidebar-item">
+                <li class="sidebar-item">
                     <a class="sidebar-link {{ request()->routeIs('counsellor.settings.*') ? 'active' : '' }}" href="{{route('counsellor.settings.index')}}">
                         <span><i class="ti ti-users"></i></span>
                         <span class="hide-menu">Settings</span>

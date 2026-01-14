@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 @include('components.datatable', [
     'tableId' => 'courses-audio-datatable',
     'title' => 'Course Audio',
@@ -8,3 +11,4 @@
         ['name' => 'courses', 'url' => null],
     ]
 ])
+@endsection

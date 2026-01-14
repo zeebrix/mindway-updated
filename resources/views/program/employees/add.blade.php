@@ -9,6 +9,7 @@
             <div class="modal-body">
                 <form id="dataForm" method="POST" action="{{ route('program.employee.store') }}">
                     @csrf
+                    <input type="hidden" name="programUser" value="{{$user?->id}}">
                     <div class="mb-3">
                         <label for="name" class="form-label">Full Name</label>
                         <input type="text" class="form-control modal-input-field" id="name" name="name"

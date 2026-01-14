@@ -10,7 +10,7 @@
 <div class="settings-page">
     {{-- Header --}}
     <header class="settings-header">
-        <img class="settings-header__logo" src="{{ asset('storage/logo/' . $user->ProgramDetail->logo) }}" alt="{{ $user->ProgramDetail->company_name }} Logo">
+        <img class="settings-header__logo" src="{{ asset('storage/' . $user->programDetail->logo) }}" alt="{{ $user->programDetail->company_name }} Logo">
         @if ($is_trial)
             <p class="settings-header__trial-status">On Free Trial: {{ $leftDays }} days left</p>
         @endif
@@ -28,7 +28,6 @@
         </div>
     </nav>
 
-    {{-- Success/Error Messages --}}
     @if (session('message'))
         <div class="alert alert-success">{{ session('message') }}</div>
     @endif
@@ -46,7 +45,7 @@
         <div class="settings-card">
             <div class="settings-card__content">
                 <label for="company_nameId" class="settings-card__label">Organization Name</label>
-                <input type="text" class="form-control settings-card__input" id="company_nameId" name="company_name" value="{{ $user->ProgramDetail->company_name }}" readonly>
+                <input type="text" class="form-control settings-card__input" id="company_nameId" name="company_name" value="{{ $user->programDetail->company_name }}" readonly>
             </div>
             <div id="edit-name-container">
                 <i id="edit-name-btn" class="ti ti-pencil settings-card__action--editable" title="Edit Name"></i>
@@ -57,7 +56,7 @@
         <div class="settings-card">
             <div class="settings-card__content">
                 <label class="settings-card__label">Access Code (3-8 characters)</label>
-                <h5 class="settings-card__value mb-0">{{ $user->ProgramDetail->code }}</h5>
+                <h5 class="settings-card__value mb-0">{{ $user->programDetail->code }}</h5>
             </div>
             <span class="settings-card__action">Contact us to change</span>
         </div>
@@ -69,15 +68,15 @@
                     <div class="settings-card__content">
                         <h5 class="settings-card__value">Upload Logo</h5>
                     </div>
-                    <img class="upload-card__icon" src="{{ asset('mw-1/assets/images/upload.png') }}" alt="Upload icon">
-                    <input type="file" id="uploadLogoInput" data-upload-url="{{ route('program.setting.save', ['id' => $user->ProgramDetail->id]) }}" style="display: none;" accept="image/*" />
+                    <img class="upload-card__icon" src="{{ asset('/images/upload.png') }}" alt="Upload icon">
+                    <input type="file" id="uploadLogoInput" data-upload-url="{{ route('program.setting.save', ['id' => $user->programDetail->id]) }}" style="display: none;" accept="image/*" />
                 </div>
             </div>
             {{-- License Card --}}
             <div class="col-md-6">
                 <div class="settings-card">
                     <div class="settings-card__content">
-                        <h5 class="settings-card__value">Licenses: {{ $user->ProgramDetail->max_lic }}</h5>
+                        <h5 class="settings-card__value">Licenses: {{ $user->programDetail->max_lic }}</h5>
                     </div>
                     <span class="settings-card__action">Contact us to change</span>
                 </div>
@@ -109,10 +108,10 @@
     <div id="plan_payment" class="tab-pane" style="display: none;">
         @php
             $planDetails = [
-                'Plan Selected' => ($plan?->plan_type == 1 ? 'Pay As You Go' : ($plan?->plan_type == 2 ? 'Standard' : 'Premium')),
+                'Plan Selected' => $plan?->type,
                 'Subscription Fee' => '$ ' . ($plan?->annual_fee ?? 'N/A') . '/Year' . ($plan?->gst_registered ? ' + GST' : ''),
-                'Session Cost' => '$ ' . ($plan?->cost_per_session ?? 'N/A') . '/Session' . ($plan?->gst_registered ? ' + GST' : ''),
-                'Session Limit' => ($Program->max_session ?? 'N/A') . ' per employee, per year',
+                'Session Cost' => '$ ' . ($plan?->session_cost ?? 'N/A') . '/Session' . ($plan?->gst_registered ? ' + GST' : ''),
+                'Session Limit' => ($user->programDetail->max_lic ?? 'N/A') . ' per employee, per year',
                 'Renewal Date' => $plan?->renewal_date ? \Carbon\Carbon::parse($plan->renewal_date)->format('F j, Y') : 'N/A',
             ];
         @endphp

@@ -34,5 +34,25 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect_uri' => env('GOOGLE_REDIRECT_URI'),
+        'redirect_callback' => env('GOOGLE_REDIRECT_CALLBACK'),
+        'scopes' => [
+            \Google_Service_Calendar::CALENDAR_EVENTS_READONLY, // Read-only access to calendar events
+            \Google_Service_Calendar::CALENDAR_READONLY, // Read-only access to calendar
+            \Google_Service_Oauth2::OPENID, // OpenID scope for authentication
+            \Google_Service_Oauth2::USERINFO_EMAIL, // Access to user's email
+            \Google_Service_Oauth2::USERINFO_PROFILE, // Access to user's profile
+            \Google_Service_Calendar::CALENDAR, // Permission to create, edit, and delete calendar events
+            \Google_Service_Calendar::CALENDAR_EVENTS, // Permission to create and manage calendar events, including conference data        
+        ],
+
+        'approval_prompt' => env('GOOGLE_APPROVAL_PROMPT', 'force'),
+        'access_type' => env('GOOGLE_ACCESS_TYPE', 'offline'),
+        'prompt' => 'consent',
+        'include_granted_scopes' => true,
+    ],
 
 ];

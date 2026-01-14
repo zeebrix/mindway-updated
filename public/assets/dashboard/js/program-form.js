@@ -1,126 +1,256 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const uploadTrigger = document.getElementById('uploadLogoTrigger');
+
+    /* ---------------------------------------------------------
+     *  LOGO UPLOAD PREVIEW
+     * --------------------------------------------------------- */
+    const logoTrigger = document.getElementById('uploadLogoTrigger');
     const logoInput = document.getElementById('logoId');
     const previewImage = document.getElementById('previewImage');
+    const user_id = document.getElementById('user_id');
 
-    uploadTrigger.addEventListener('click', () => logoInput.click());
+    if (logoTrigger && logoInput) {
+        logoTrigger.addEventListener('click', () => logoInput.click());
 
-    logoInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = e => previewImage.src = e.target.result;
-            reader.readAsDataURL(file);
-        }
-    });
-
-    // Department modal logic
-    const departmentList = document.getElementById('departmentList');
-    const departmentsInput = document.getElementById('departments');
-    const departmentNameInput = document.getElementById('departmentNameInput');
-    const addDepartmentButton = document.getElementById('addDepartmentButton');
-    let departments = [];
-
-    function updateDepartmentList() {
-        departmentList.innerHTML = '';
-        departments.forEach((d, i) => {
-            const div = document.createElement('div');
-            div.className = 'department-item';
-            div.innerHTML = `<span>${d}</span><button type="button" data-index="${i}">Remove</button>`;
-            departmentList.appendChild(div);
-        });
-        departmentsInput.value = JSON.stringify(departments);
-    }
-
-    departmentList.addEventListener('click', e => {
-        if (e.target.tagName === 'BUTTON') {
-            departments.splice(e.target.dataset.index, 1);
-            updateDepartmentList();
-        }
-    });
-
-    addDepartmentButton.addEventListener('click', () => {
-        const name = departmentNameInput.value.trim();
-        if (name) {
-            departments.push(name);
-            updateDepartmentList();
-            departmentNameInput.value = '';
-            const modal = bootstrap.Modal.getInstance(document.getElementById('add-department'));
-            modal.hide();
-        }
-    });
-
-    // Make fields required for Active Program
-    const type = "{{ $type }}";
-    if (type == 1) {
-        ['annual_feeId','cost_per_sessionId','renewal_dateId'].forEach(id => {
-            document.getElementById(id)?.setAttribute('required', 'required');
-        });
-        document.getElementById('active-program').classList.remove('d-none');
-        document.getElementById('active-program').classList.add('d-block');
-    }
-
-    // Renewal date formatting
-    const renewalInput = document.getElementById('renewal_dateId');
-    renewalInput?.addEventListener('input', e => {
-        let val = e.target.value.replace(/[^0-9]/g,'');
-        if(val.length>2) val = val.slice(0,2)+'/'+val.slice(2);
-        e.target.value = val.slice(0,5);
-    });
-
-     const renewalDateInput = document.getElementById('renewal_date');
-    if(renewalDateInput) {
-        renewalDateInput.addEventListener('input', function(e){
-            let value = e.target.value.replace(/[^0-9]/g,'');
-            if(value.length>2) value = value.slice(0,2)+'/'+value.slice(2);
-            e.target.value = value.slice(0,5);
-        });
-    }
-
-    // Upload logo preview
-    const logoTrigger = document.getElementById('uploadLogoTrigger');
-    if(logoTrigger){
-        logoTrigger.addEventListener('click',()=>document.getElementById('logoId').click());
-    }
-    const logoInput = document.getElementById('logoId');
-    if(logoInput){
-        logoInput.addEventListener('change', function(event){
-            const file = event.target.files[0];
-            if(file){
+        logoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e){
-                    document.getElementById('previewImage').src = e.target.result;
-                }
+                reader.onload = e => previewImage.src = e.target.result;
                 reader.readAsDataURL(file);
             }
         });
     }
 
-    // Departments
-    let departments1 = window.programDepartments ?? [];
-    const departmentList1 = document.getElementById('departmentList');
-    const departmentsInput1 = document.getElementById('departments');
-    const addBtn = document.getElementById('addDepartmentButton');
-    const departmentInput = document.getElementById('departmentNameInput');
 
-    function renderDepartments(){
-        departmentList1.innerHTML = '';
-        departments1.forEach((d,i)=>{
-            const div = document.createElement('div');
-            div.classList.add('department-item');
-            div.innerHTML = `<span>${d}</span><button type="button" data-index="${i}">Remove</button>`;
-            div.querySelector('button').addEventListener('click', ()=>{departments1.splice(i,1); renderDepartments();});
-            departmentList1.appendChild(div);
+    /* ---------------------------------------------------------
+     *  ACTIVE PROGRAM FIELD REQUIREMENTS
+     * --------------------------------------------------------- */
+    const type = "{{ $type }}";
+    if (type == 1) {
+        const requiredFields = ['annual_feeId', 'cost_per_sessionId', 'renewal_dateId'];
+        requiredFields.forEach(id => {
+            document.getElementById(id)?.setAttribute('required', 'required');
         });
-        departmentsInput1.value = JSON.stringify(departments1);
+
+        const activeSection = document.getElementById('active-program');
+        if (activeSection) {
+            activeSection.classList.remove('d-none');
+            activeSection.classList.add('d-block');
+        }
     }
 
-    if(addBtn){
-        addBtn.addEventListener('click', ()=>{
-            const val = departmentInput1.value.trim();
-            if(val){departments1.push(val); renderDepartments(); departmentInput1.value=''; $('#add-department').modal('hide');}
+
+    /* ---------------------------------------------------------
+     *  RENEWAL DATE FORMATTING (DD/MM)
+     * --------------------------------------------------------- */
+    function bindRenewalFormatter(input) {
+        if (!input) return;
+
+        input.addEventListener('input', function (e) {
+            let v = e.target.value.replace(/\D/g, '');
+            if (v.length > 2) v = v.slice(0, 2) + '/' + v.slice(2);
+            e.target.value = v.slice(0, 5);
+        });
+    }
+
+    bindRenewalFormatter(document.getElementById('renewal_dateId'));
+    bindRenewalFormatter(document.getElementById('renewal_date'));
+
+
+    /* ---------------------------------------------------------
+     *  DEPARTMENT HANDLER
+     * --------------------------------------------------------- */
+    const el = document.getElementById('departmentsData');
+    let departments = [];
+
+    if (el && el.value) {
+        try {
+            departments = JSON.parse(el.value);
+        } catch (e) {
+            departments = [];
+        }
+    }
+    const departmentList = document.getElementById('departmentList');
+    const departmentsInput = document.getElementById('departments');
+    const addDepartmentButton = document.getElementById('addDepartmentButton');
+    const departmentNameInput = document.getElementById('departmentNameInput');
+
+    function renderDepartments() {
+        if (!departmentList) return;
+
+        departmentList.innerHTML = '';
+
+        departments.forEach((d, i) => {
+            const name = (typeof d === 'object' && d !== null) ? d.name : d;
+            const div = document.createElement('div');
+            div.classList.add('department-item');
+            div.innerHTML = `
+                <span>${name}</span>
+                <button type="button" class="remove-dept" data-index="${i}">Remove</button>
+            `;
+            departmentList.appendChild(div);
+        });
+
+        if (departmentsInput) {
+            departmentsInput.value = JSON.stringify(departments);
+        }
+    }
+
+    if (departmentList) {
+        departmentList.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-dept')) {
+                const index = e.target.dataset.index;
+                departments.splice(index, 1);
+                renderDepartments();
+            }
+        });
+    }
+
+    if (addDepartmentButton) {
+        addDepartmentButton.addEventListener('click', () => {
+            const value = departmentNameInput.value.trim();
+            if (value) {
+                departments.push(value);
+                departmentNameInput.value = '';
+                renderDepartments();
+
+                // hide modal
+                const modalEl = document.getElementById('add-department');
+                if (modalEl) bootstrap.Modal.getInstance(modalEl)?.hide();
+            }
         });
     }
 
     renderDepartments();
+
+    const previewBtn = document.getElementById('previewDataBtn');
+    const uploadBtn = document.getElementById('uploadDataBtn');
+    const fileInput = document.getElementById('uploadFile');
+    const form = document.getElementById('dataFormBulk');
+    const previewTableBody = document.getElementById('previewTableBody');
+
+    previewBtn.addEventListener('click', function () {
+        const file = fileInput.files[0];
+
+        if (!file) {
+            alert("Please upload a file.");
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            const data = new Uint8Array(event.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheet = workbook.SheetNames[0];
+            const sheetData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], { header: 1 });
+
+            populatePreviewTable(sheetData);
+            uploadBtn.hidden = false;
+        };
+
+        reader.readAsArrayBuffer(file);
+    });
+
+    function populatePreviewTable(data) {
+        previewTableBody.innerHTML = "";
+
+        data.slice(1).forEach((row, index) => {
+            if (row.length > 1) {
+                const tr = document.createElement('tr');
+
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${row[0]}</td>
+                    <td>${row[1]}</td>
+                    <td><i class="ti ti-trash delete-row-btn"></i></td>
+                `;
+
+                tr.querySelector('.delete-row-btn').addEventListener('click', () => {
+                    tr.remove();
+                });
+
+                previewTableBody.appendChild(tr);
+            }
+        });
+    }
+
+    form.addEventListener('submit', function () {
+        const rows = document.querySelectorAll('#previewTableBody tr');
+        const finalData = [];
+
+        rows.forEach(row => {
+            const cells = row.children;
+
+            finalData.push({
+                id: cells[0].textContent.trim(),
+                name: cells[1].textContent.trim(),
+                email: cells[2].textContent.trim()
+            });
+        });
+
+        document.getElementById('finalDataInput').value = JSON.stringify(finalData);
+    });
+
+    $('#Yajra-dataTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: `/admin/programs/${user_id.value}/get-customer-data`,
+            type: "GET"
+        },
+        columns: [
+            { data: 'name_email', name: 'name_email' },
+            { data: 'level', name: 'level' },
+            { data: 'max_session', name: 'max_session' },
+            { data: 'action', name: 'action', orderable: false, searchable: false }
+        ],
+    });
+
+
 });
+document.querySelectorAll('.js-program-action').forEach(btn => {
+
+    btn.addEventListener('click', () => {
+        const action = btn.dataset.action;
+        if (!confirm('Are you sure you want to delete permanently?')) {
+            return;
+        }
+
+        const form = document.getElementById('programActionForm');
+        document.getElementById('action').value = action;
+
+        form.submit();
+    });
+
+});
+(() => {
+    'use strict';
+
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            let isValid = true;
+
+            // Custom validation for Employees Visible radio
+            const radioGroup = form.querySelectorAll('input[name="allow_employees"]');
+            const feedback = form.querySelector('#allow-employees-group + .invalid-feedback');
+
+            // Check if any radio is checked
+            const checked = Array.from(radioGroup).some(r => r.checked);
+            if (!checked) {
+                isValid = false;
+                feedback.style.display = 'block'; // show error
+            } else {
+                feedback.style.display = 'none'; // hide error
+            }
+
+            if (!form.checkValidity() || !isValid) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            form.classList.add('was-validated');
+        }, false);
+    });
+})();

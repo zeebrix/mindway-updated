@@ -30,20 +30,6 @@ class AuthController extends Controller
     {
         if (Auth::check()) {
             $user = Auth::user();
-            // $user->assignRole('counsellor');
-            // $permission = Permission::firstOrCreate([
-            //     'name' => 'access-counsellor-panel',
-            //     'guard_name' => 'web',
-            // ]);
-
-            // // Create role
-            // $role = Role::firstOrCreate([
-            //     'name' => 'counsellor',
-            //     'guard_name' => 'web',
-            // ]);
-
-            // Give permission to role
-            // $role->givePermissionTo($permission);
             if ($user->hasRole('admin') || $user->hasRole('super-admin')) {
                 return redirect()->intended(route('admin.dashboard'));
             }
@@ -54,8 +40,8 @@ class AuthController extends Controller
                 return redirect()->intended(route('program.dashboard'));
             }
 
-
-            return redirect()->intended(route('home'));
+            Auth::logout();
+            return redirect()->intended(route('/home'));
         }
         return view('auth.login');
     }

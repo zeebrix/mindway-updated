@@ -73,7 +73,7 @@
 
                         <div class="col-md-6">
                             <label class="form-label" for="specializations">Specializations</label>
-                            <input type="text" id="tagsInput" name="tags" class="form-control" placeholder="Select Specialization" />
+                            <input type="text" id="tagsInput" name="tags[]" class="form-control" placeholder="Select Specialization" />
                         </div>
 
                         <div class="col-md-6">

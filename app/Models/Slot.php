@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Slot extends Model
 {
+    protected $fillable = ['counselor_id', 'date', 'is_booked', 'start_time', 'end_time'];
+
+    protected $casts = [
+        'start_time' => 'datetime',
+        'end_time' => 'datetime',
+    ];
     /**
      * Get the counsellor who offers this slot.
      */

@@ -36,6 +36,6 @@ class CounsellingSession extends Model
      */
     public function program(): BelongsTo
     {
-        return $this->belongsTo(ProgramDetail::class, 'program_id');
+        return $this->belongsTo(programDetail::class, 'program_id');
     }
 }

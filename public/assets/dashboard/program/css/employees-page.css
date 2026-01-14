@@ -21,16 +21,6 @@
     /* Make the icon non-clickable */
 }
 
-.member-style {
-    color: #72DC68 !important;
-    background-color: #F5FFF6 !important;
-}
-
-.admin-style {
-    color: #DCA268 !important;
-    background-color: #FFFCF5 !important;
-}
-
 /* Styles extracted from inline attributes for better structure */
 
 /* Trial Info */

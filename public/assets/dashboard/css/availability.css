@@ -1,0 +1,60 @@
+/* -------- Availability Page -------- */
+
+.day-row {
+    padding: 12px 0;
+    transition: background-color .25s ease;
+}
+
+.day-row:hover {
+    background-color: #f8fafc;
+}
+
+.time-input {
+    width: 140px;
+}
+
+.availability-indicator {
+    width: 34px;
+    height: 28px;
+    display: inline-block;
+    margin-right: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .25s ease;
+}
+
+.availability-indicator:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 4px rgba(0,0,0,.2);
+}
+
+/* -------- Timezone Modal -------- */
+.timezone-search {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.timezone-list {
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.timezone-item {
+    padding: 12px;
+    border-radius: 6px;
+    transition: .25s ease;
+    cursor: pointer;
+}
+
+.timezone-item:hover {
+    background-color: #eef3ff;
+}
+
+.timezone-item.selected {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
+.btn-close {
+    font-size: 1.4rem;
+}

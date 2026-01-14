@@ -29,10 +29,10 @@
                                             <p class="fw-bold mb-1">{{ $booking->user->email ?? 'Email not provided' }}</p>
 
                                             @if($booking->user->preferred_email)
-                                                <div class="d-flex flex-wrap">
-                                                    <span class="text-success fw-bold me-1">Preferred:</span>
-                                                    <p class="mb-0 fw-semibold">{{ $booking->user->preferred_email }}</p>
-                                                </div>
+                                            <div class="d-flex flex-wrap">
+                                                <span class="text-success fw-bold me-1">Preferred:</span>
+                                                <p class="mb-0 fw-semibold">{{ $booking->user->preferred_email }}</p>
+                                            </div>
                                             @endif
 
                                             <p class="fw-bold mb-0">{{ $booking->user->max_session ?? 0 }} Session(s) Remaining</p>
@@ -41,7 +41,7 @@
                                         {{-- Date & Time --}}
                                         <div class="col-md-3 border-right-gray">
                                             <h5 class="fw-semibold text-ellipsis">
-                                                Date & Time {{ $booking->counselor->timezone }}
+                                                Date & Time {{ $booking?->counselor?->counsellorDetail?->timezone }}
                                             </h5>
 
                                             <p class="fw-bold mb-0">
@@ -54,21 +54,21 @@
 
                                             {{-- Cancel Button --}}
                                             <a href="javascript:void(0);"
-                                               class="btn btn-primary mindway-btn js-cancel-session mt-2"
-                                               data-url="{{ route('counselor.session.cancel', ['booking_id' => $booking->id, 'customer_id' => $booking->user_id, 'customer_timezone' => $booking->user->timezone]) }}"
-                                               data-user-name="{{ $booking->user->name }}"
-                                               data-session-date="{{ $booking->slot->start_time->setTimezone($timezone)->format('F j, Y \a\t g:i A') }}">
+                                                class="btn btn-primary mindway-btn js-cancel-session mt-2"
+                                                data-url="{{ route('counsellor.session.cancel', ['booking_id' => $booking->id, 'customer_id' => $booking->user_id, 'customer_timezone' => $booking->user->timezone]) }}"
+                                                data-user-name="{{ $booking->user->name }}"
+                                                data-session-date="{{ $booking->slot->start_time->setTimezone($timezone)->format('F j, Y \a\t g:i A') }}">
                                                 Cancel
                                             </a>
 
                                             {{-- Log Session --}}
                                             <a class="btn btn-log-session mindway-btn"
-                                               data-bs-toggle="modal"
-                                               data-bs-target="#addSessionModal"
-                                               data-id="{{ $booking->user_id }}"
-                                               data-counselor_id="{{ $booking->counselor_id }}"
-                                               data-slot_id="{{ $booking->slot_id }}"
-                                               data-program_id="{{ $booking->brevoUser?->program_id }}">
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#addSessionModal"
+                                                data-id="{{ $booking->user_id }}"
+                                                data-counselor_id="{{ $booking->counselor_id }}"
+                                                data-slot_id="{{ $booking->slot_id }}"
+                                                data-program_id="{{ $booking->brevoUser?->program_id }}">
                                                 Log Session
                                             </a>
                                         </div>
@@ -76,13 +76,13 @@
                                         {{-- Meeting --}}
                                         <div class="col-md-3">
                                             @if($booking->communication_method === 'Video Call')
-                                                <p>Video Call Chosen</p>
-                                                <a target="_blank" href="{{ $booking->meeting_link }}" class="btn btn-primary mindway-btn">
-                                                    JOIN MEETING
-                                                </a>
+                                            <p>Video Call Chosen</p>
+                                            <a target="_blank" href="{{ $booking->meeting_link }}" class="btn btn-primary mindway-btn">
+                                                JOIN MEETING
+                                            </a>
                                             @else
-                                                <p>Phone Call Chosen</p>
-                                                <strong>Call: {{ $booking->user->phone }}</strong>
+                                            <p>Phone Call Chosen</p>
+                                            <strong>Call: {{ $booking->user->phone }}</strong>
                                             @endif
                                         </div>
 
@@ -109,8 +109,8 @@
             </div>
         </div>
 
-        @include('counselor.session.modal.add')
-        @include('counselor.session.modal.rebook')
+        @include('counselor.client.modal.add')
+        @include('counselor.client.modal.rebook')
 
     </div>
 </div>
