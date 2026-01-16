@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Admin\CategoryCoursesController;
 use App\Http\Controllers\Admin\CounselorsController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\CSMController;
+use App\Http\Controllers\Admin\CSManagerController;
 use App\Http\Controllers\Admin\CoursesController;
 use App\Http\Controllers\Admin\CoursesAudioController;
 use App\Http\Controllers\Admin\FeelingsController;
@@ -114,8 +114,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:access-admin-pa
     Route::get('/users-data', [UserController::class, 'getData'])->name('users.data');
 
     // CSM Role from User Table
-    Route::resource('/csm', CSMController::class)->names('csm');
-    Route::get('/csm-data', [CSMController::class, 'getData'])->name('csm.data');
+    Route::resource('/csm', CSManagerController::class)->names('csm');
+    Route::get('/csm-data', [CSManagerController::class, 'getData'])->name('csm.data');
 
 
     // Program
