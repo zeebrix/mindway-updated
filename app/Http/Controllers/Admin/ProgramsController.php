@@ -121,7 +121,7 @@ class ProgramsController extends Controller
                 $logoPath = $request->file('logo')->store('program_logos', 'public');
             }
 
-            $programDetail = programDetail::create([
+            $programDetail = ProgramDetail::create([
                 'user_id' => $adminUser->id,
                 'company_name' => $request->company_name,
                 'max_lic' => $request->max_lic,
