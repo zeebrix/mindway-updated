@@ -64,7 +64,7 @@ class User extends Authenticatable
     }
     public function programDetail(): HasOne
     {
-        return $this->hasOne(programDetail::class);
+        return $this->hasOne(ProgramDetail::class);
     }
     public function counsellorDetail(): HasOne
     {
