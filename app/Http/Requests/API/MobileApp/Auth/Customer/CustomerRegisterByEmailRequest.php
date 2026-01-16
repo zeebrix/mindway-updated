@@ -5,14 +5,16 @@ namespace App\Http\Requests\API\MobileApp\Auth\Customer;
 use App\Http\Requests\API\BaseAPIRequest;
 use Illuminate\Validation\Rule;
 
-class CustomerRegisterByEmailRequest extends BaseAPIRequest {
+class CustomerRegisterByEmailRequest extends BaseAPIRequest
+{
 
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize() {
+    public function authorize()
+    {
         return true;
     }
 
@@ -21,7 +23,8 @@ class CustomerRegisterByEmailRequest extends BaseAPIRequest {
      *
      * @return array
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             'email' => ['required', 'email', Rule::unique('customers')->where(function ($query) {
                 return $query->where('deleted_at', NULL);
@@ -40,6 +43,4 @@ class CustomerRegisterByEmailRequest extends BaseAPIRequest {
             'program_id.required' => 'An error occurred while setting up your account. Please try agin after reopen the app.',
         ];
     }
-
-
 }
