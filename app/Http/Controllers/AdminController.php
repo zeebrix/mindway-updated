@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\programDetail;
+use App\Models\ProgramDetail;
 use App\Models\CounsellingSession;
 use Illuminate\Http\Request;
 use Illuminate\View\View;

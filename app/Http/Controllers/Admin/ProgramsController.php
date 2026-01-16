@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CustomerDetail;
 use App\Models\ProgramCustomer;
 use App\Models\ProgramDepartment;
-use App\Models\programDetail;
+use App\Models\ProgramDetail;
 use App\Models\ProgramPlan;
 use App\Models\Session;
 use App\Models\User;
