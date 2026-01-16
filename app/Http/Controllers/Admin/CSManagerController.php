@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
-class CSMController extends Controller
+class CSManagerController extends Controller
 {
     use DataTableTrait;
 
