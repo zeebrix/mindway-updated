@@ -40,7 +40,7 @@ class SleepAudiosController extends Controller
                     'editColumn' => fn($row) => $row->image ? '<img src="' . Storage::url($row->image) . '" class="img-thumbnail" style="width: 80px;">' : 'No Image',
                 ],
                 'title' => ['title' => 'Title'],
-                'course.course_title' => ['title' => 'Course', 'name' => 'course.course_title'],
+                'course.title' => ['title' => 'Course', 'name' => 'course.title'],
                 'audio' => [
                     'title' => 'Audio', 'orderable' => false, 'searchable' => false,
                     'editColumn' => fn($row) => $row->audio ? '<audio controls style="width: 200px;"><source src="' . Storage::url($row->audio) . '" type="audio/mpeg"></audio>' : 'No Audio',
@@ -57,7 +57,7 @@ class SleepAudiosController extends Controller
 
     public function create()
     {
-        $courses = Course::pluck('course_title', 'id');
+        $courses = Course::pluck('title', 'id');
         return view('admin.sleep_audios.create', compact('courses'));
     }
 
@@ -86,7 +86,7 @@ class SleepAudiosController extends Controller
 
     public function edit(SleepAudio $sleepAudio)
     {
-        $courses = Course::pluck('course_title', 'id');
+        $courses = Course::pluck('title', 'id');
         return view('admin.sleep_audios.edit', compact('sleepAudio', 'courses'));
     }
 

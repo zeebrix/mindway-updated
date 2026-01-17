@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SleepAudio extends Model
 {
     use HasFactory, SoftDeletes; 
-
+    protected $table = 'sleep_audios';
     protected $fillable = [
         'audio',
         'course_id',
