@@ -13,12 +13,12 @@
             <ul id="sidebarnav">
                 @can('access-admin-panel')
                 <li class="nav-small-cap"><span class="hide-menu">Home</span></li>
-                <li class="sidebar-item">
+                <!-- <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('admin.dashboard') }}">
                         <span><i class="ti ti-layout-dashboard"></i></span>
                         <span class="hide-menu">Dashboard</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{ route('admin.users.index') }}">
                         <span><i class="ti ti-user-plus"></i></span>
@@ -56,12 +56,12 @@
                         <span class="hide-menu">All Courses</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
+                <!-- <li class="sidebar-item">
                     <a class="sidebar-link" href="{{route('admin.courses-audio.index')}}">
                         <span><i class="ti ti-article"></i></span>
                         <span class="hide-menu">Course Audio</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="sidebar-item">
                     <a class="sidebar-link" href="{{route('admin.sos-audios.index')}}">
                         <span><i class="ti ti-article"></i></span>

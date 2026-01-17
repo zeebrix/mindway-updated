@@ -80,7 +80,7 @@ class AuthController extends Controller
             // Custom redirection logic (from your original code)
             $user = Auth::user();
             if ($user->hasRole('admin') || $user->hasRole('super-admin')) {
-                return redirect()->intended(route('admin.dashboard'));
+                return redirect()->intended(route('admin.users.index'));
             }
             if ($user->hasRole('counsellor')) {
                 return redirect()->intended(route('counsellor.dashboard'));

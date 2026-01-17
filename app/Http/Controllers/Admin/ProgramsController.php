@@ -100,7 +100,7 @@ class ProgramsController extends Controller
             'plan_type' => 'nullable|string',
             'annual_fee' => 'nullable|numeric',
             'cost_per_session' => 'nullable|numeric',
-            'renewal_date' => 'nullable|date_format:m/d',
+            'renewal_date' => 'nullable|date_format:d/m',
             'gst_registered' => 'nullable|in:yes,no',
             'logo' => 'nullable|image|max:2048'
         ]);
