@@ -35,7 +35,7 @@ class SosAudiosController extends Controller
             'relations' => ['course'], // Eager load the relationship
             'columns' => [
                 'id' => ['title' => 'ID'],
-                'course.course_title' => ['title' => 'Course', 'name' => 'course.course_title'],
+                'course.title' => ['title' => 'Course', 'name' => 'course.title'],
                 'audio_title' => ['title' => 'Audio Title'],
                 'duration' => ['title' => 'Duration'],
                 'total_play' => ['title' => 'Play Count'],
@@ -61,7 +61,7 @@ class SosAudiosController extends Controller
 
     public function create()
     {
-        $courses = Course::pluck('course_title', 'id');
+        $courses = Course::pluck('title', 'id');
         return view('admin.sos_audios.create', compact('courses'));
     }
 
@@ -88,7 +88,7 @@ class SosAudiosController extends Controller
 
     public function edit(SosAudio $sosAudio)
     {
-        $courses = Course::pluck('course_title', 'id');
+        $courses = Course::pluck('title', 'id');
         return view('admin.sos_audios.edit', compact('sosAudio', 'courses'));
     }
 
